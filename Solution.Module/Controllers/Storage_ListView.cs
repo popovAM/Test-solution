@@ -39,7 +39,7 @@ namespace Solution.Module.Controllers
                 Caption = "Удалить склад",
                 ImageName = "MenuBar_Delete"
             };
-            //createStorage.Execute += deleteStorage_Execute;
+            deleteStorage.Execute += deleteStorage_Execute;
         }
 
         /// <summary>
@@ -70,22 +70,30 @@ namespace Solution.Module.Controllers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //private void deleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
-        //{
-        //    // Выборка склада по дате создания
-        //    var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>()
-        //    .OrderByDescending(p => p.Name)
-        //    .FirstOrDefault();
-        //
-        //    // Создание пустого объекта 
-        //    Storage newStorage = new Storage(((XPObjectSpace)ObjectSpace).Session);
-        //
-        //    // Формирование названия объекта
-        //    newStorage.Name = lastStorage != null ? lastStorage.Name + 1 : 1;
-        //
-        //    //Сохранение изменений
-        //    ObjectSpace.CommitChanges();
-        //    ObjectSpace.Refresh();
-        //}
+        private void deleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
+        {
+            // Выборка склада по дате создания
+            var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>()
+            .OrderByDescending(p => p.Name)
+            .FirstOrDefault();
+
+            if (lastStorage != null)
+            {
+                bool isEmpty = true;
+                foreach (var picket in lastStorage.Pickets)
+                {
+                    if (!picket.CargoPickets.Any())
+                    {
+                        isEmpty = false;
+                        break;
+                    }
+                }
+                if (isEmpty == true) ObjectSpace.Delete(lastStorage);
+                else throw new UserFriendlyException("На пикетах находятся грузы.");
+            }
+            //Сохранение изменений
+            ObjectSpace.CommitChanges();
+            ObjectSpace.Refresh();
+        }
     }
 }
