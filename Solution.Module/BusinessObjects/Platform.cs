@@ -14,6 +14,9 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Площадка
+    /// </summary>
     [DefaultClassOptions]
     public class Platform : BaseObject
     { 
@@ -21,18 +24,13 @@ namespace Solution.Module.BusinessObjects
             : base(session)
         {
         }
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();
-        }
-
+        
         private string _name;
         private Storage _storage;
 
         /// <summary>
-        /// Название
+        /// Название площадки
         /// </summary>
-        [ModelDefault("AllowEdit", "False")]
         public string Name
         {
             get { return _name; }
@@ -61,25 +59,25 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
-        ///<summary>
-        /// Журнал расхода груза на площадке
-        ///</summary>
-        [Association("Platform-CargoPickets")]
-        public XPCollection<CargoPicket> CargoPickets
-        {
-            get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
-        }
+        /////<summary>
+        ///// Журнал расхода груза на площадке
+        /////</summary>
+        //[Association("Platform-CargoPickets")]
+        //public XPCollection<CargoPicket> CargoPickets
+        //{
+        //    get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
+        //}
 
-        /// <summary>
-        /// Общий вес площадки
-        /// </summary>
-        [ImmediatePostData]
-        public decimal Weight
-        {
-            get
-            {
-                return CargoPickets.Sum(c => c.Weight);
-            }
-        }
+        ///// <summary>
+        ///// Общий вес площадки
+        ///// </summary>
+        //[ImmediatePostData]
+        //public decimal Weight
+        //{
+        //    get
+        //    {
+        //        return CargoPickets.Sum(c => c.Weight);
+        //    }
+        //}
     }
 }

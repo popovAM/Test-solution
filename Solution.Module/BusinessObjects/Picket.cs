@@ -14,6 +14,9 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Пикет
+    /// </summary>
     [DefaultClassOptions]
     public class Picket : BaseObject
     { 
@@ -21,19 +24,16 @@ namespace Solution.Module.BusinessObjects
             : base(session)
         {
         }
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();            
-        }
-
+        
         private Storage _storage;
         private Platform _platform;
-        private bool _isEmpty;
+        private bool _isFull;
         private int _number;
 
         /// <summary>
         /// Номер пикета, для формирования площадки
         /// </summary>
+        [Index(0)]
         public int Number
         {
             get { return _number; }
@@ -41,11 +41,11 @@ namespace Solution.Module.BusinessObjects
         }
 
         /// <summary>
-        /// Склад
+        /// Склад, на котором находится пикет
         /// </summary>
         [Association("Storage-Pickets")]
-        [VisibleInListView(false)]
         [ImmediatePostData]
+        [Index(1)]
         public Storage Storage
         {
             get { return _storage; }
@@ -59,15 +59,16 @@ namespace Solution.Module.BusinessObjects
         /// Занят грузом или нет
         /// </summary>
         [VisibleInListView(false)]
-        public bool IsEmpty
+        public bool IsFull
         {
-            get { return _isEmpty; }
-            set { SetPropertyValue(nameof(IsEmpty), ref _isEmpty, value); }
+            get { return _isFull; }
+            set { SetPropertyValue(nameof(IsFull), ref _isFull, value); }
         }
 
         /// <summary>
-        /// Площадка
+        /// Площадка, в которую включен пикет
         /// </summary>
+        [Index(2)]
         [Association("Platform-Pickets")]
         public Platform Platform
         {
