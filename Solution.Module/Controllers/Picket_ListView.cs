@@ -127,12 +127,8 @@ namespace Solution.Module.Controllers
                 //Проверка на наличие последнего пикета
                 if (lastPicket != null)
                 {
-                    //Запрос на поиск груза на последнем пикете
-                    var session = ((XPObjectSpace)ObjectSpace).Session;
-                    var cargoPicket = session.Query<CargoPicket>().Where(p => p.Picket == lastPicket).FirstOrDefault(); 
-
                     // Удаление пикета, если он без площадки
-                    if (lastPicket.Platform == null && cargoPicket == null)
+                    if (lastPicket.Platform == null)
                     {
                         ObjectSpace.Delete(lastPicket);
                         ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Pickets)));

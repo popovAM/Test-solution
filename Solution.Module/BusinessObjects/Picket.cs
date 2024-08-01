@@ -18,7 +18,7 @@ namespace Solution.Module.BusinessObjects
     /// Пикет
     /// </summary>
     [DefaultClassOptions]
-    [DefaultProperty(nameof(Number))]
+    [DefaultProperty(nameof(Name))]
     public class Picket : BaseObject
     { 
         public Picket(Session session)
@@ -34,6 +34,8 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Номер пикета, для формирования площадки
         /// </summary>
+        [Index(1)]
+        [VisibleInLookupListView(false)]
         public string Name
         {
             get 
@@ -42,8 +44,9 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
-        [Index(0)]
+        [Index(2)]
         [ModelDefault("AllowEdit", "false")]
+        [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(true)]
         public int Number
         {
             get { return _number; }
@@ -53,6 +56,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Склад, на котором находится пикет
         /// </summary>
+        [Index(0)]
         [Association("Storage-Pickets")]
         [ImmediatePostData]
         [VisibleInListView(false), VisibleInLookupListView(true)]
@@ -68,8 +72,8 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Занят грузом или нет
         /// </summary>
-        [Index(2)]
-        [VisibleInDetailView(false)]
+        [Index(4)]
+        [VisibleInListView(true), VisibleInDetailView(false), VisibleInLookupListView(false)]
         public bool IsFull
         {
             get { return _isFull; }
@@ -79,7 +83,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Площадка, в которую включен пикет
         /// </summary>
-        [Index(1)]
+        [Index(3)]
         [Association("Platform-Pickets")]
         [ModelDefault("AllowEdit", "false"), VisibleInLookupListView(true)]
         public Platform Platform
@@ -92,7 +96,8 @@ namespace Solution.Module.BusinessObjects
         /// Журнал расхода груза на площадке
         ///</summary>
         [Association("Picket-CargoPickets")]
-        [VisibleInDetailView(false)]
+        [VisibleInListView(false)]
+        [ModelDefault("AllowEdit", "false")]
         public XPCollection<CargoPicket> CargoPickets
         {
             get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
