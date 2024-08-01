@@ -96,7 +96,7 @@ namespace Solution.Module.DatabaseUpdate
             role.AddTypePermissionsRecursively<Storage>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
 
             // Разрешения для объектов CargoPicket
-            //role.AddTypePermissionsRecursively<CargoPicket>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+            role.AddTypePermissionsRecursively<CargoPicket>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
 
             // Разрешения для объектов Picket
             role.AddTypePermissionsRecursively<Picket>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);

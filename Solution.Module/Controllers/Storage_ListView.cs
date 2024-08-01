@@ -72,24 +72,27 @@ namespace Solution.Module.Controllers
         /// <param name="e"></param>
         private void deleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
+            var collectionSource = new CollectionSource(ObjectSpace, typeof(Storage));
+            var view = Application.CreateListView("Storage_ListView", collectionSource, false);
+            
             // Выборка склада по дате создания
-            var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>()
-            .OrderByDescending(p => p.Name)
-            .FirstOrDefault();
+            var selectedStorage = view.SelectedObjects.OfType<Storage>().ToList();
 
-            if (lastStorage != null)
+            if (selectedStorage != null)
             {
-                bool isEmpty = true;
-                foreach (var picket in lastStorage.Pickets)
-                {
-                    if (picket.CargoPickets.Any())
+                foreach (var storage in selectedStorage) {
+                    bool isEmpty = true;
+                    foreach (var picket in storage.Pickets)
                     {
-                        isEmpty = false;
-                        break;
+                        if (picket.CargoPickets.Any())
+                        {
+                            isEmpty = false;
+                            break;
+                        }
                     }
+                    if (isEmpty == true) ObjectSpace.Delete(storage);
+                    else throw new UserFriendlyException("На пикетах находятся грузы.");
                 }
-                if (isEmpty == true) ObjectSpace.Delete(lastStorage);
-                else throw new UserFriendlyException("На пикетах находятся грузы.");
             }
             //Сохранение изменений
             ObjectSpace.CommitChanges();
