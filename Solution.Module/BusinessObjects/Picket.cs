@@ -33,6 +33,14 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Номер пикета, для формирования площадки
         /// </summary>
+        public string Name
+        {
+            get 
+            {
+                return $"{Storage.Name}-({Number})";
+            }
+        }
+
         [Index(0)]
         public int Number
         {
