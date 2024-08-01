@@ -23,7 +23,6 @@ namespace Solution.Module.Controllers
     /// </summary>
     public partial class CargoPicket_ListView : ViewController
     {
-        private Picket _picket;
         public CargoPicket_ListView()
         {
             InitializeComponent();
@@ -37,23 +36,6 @@ namespace Solution.Module.Controllers
 
             AddCargo.Execute += AddCargo_Execute;
         }
-
-        /// <summary>
-        /// Обновление родительского объекта
-        /// </summary>
-        /// <param name="masterObject"></param>
-        private void UpdateMasterObject(object masterObject)
-        {
-            _picket = (Picket)masterObject;
-        }
-
-        /// <summary>
-        /// Обновление нашего объекта при изменении родительского объекта
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnMasterObjectChanged(object sender, EventArgs e) => UpdateMasterObject(((PropertyCollectionSource)sender).MasterObject);
-
         protected override void OnActivated()
         {
             base.OnActivated();
@@ -64,24 +46,6 @@ namespace Solution.Module.Controllers
             {
                 targetController.ProcessCurrentObjectAction.Enabled["Нельзя"] = false;
             }
-
-            if (((DevExpress.ExpressApp.ListView)View).CollectionSource is PropertyCollectionSource collectionSource)
-            {
-                collectionSource.MasterObjectChanged += OnMasterObjectChanged;
-                if (collectionSource.MasterObject != null)
-                {
-                    UpdateMasterObject(collectionSource.MasterObject);
-                }
-            }
-        }
-
-        protected override void OnDeactivated()
-        {
-            if (((DevExpress.ExpressApp.ListView)View).CollectionSource is PropertyCollectionSource collectionSource)
-            {
-                collectionSource.MasterObjectChanged -= OnMasterObjectChanged;
-            }
-            base.OnDeactivated();
         }
 
         /// <summary>
