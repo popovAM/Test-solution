@@ -33,6 +33,13 @@ namespace Solution.Module.Controllers
                 ImageName = "MenuBar_New"
             };
             createStorage.Execute += createStorage_Execute;
+
+            SimpleAction deleteStorage = new SimpleAction(this, "deleteStorageAction", PredefinedCategory.ObjectsCreation)
+            {
+                Caption = "Удалить склад",
+                ImageName = "MenuBar_Delete"
+            };
+            //createStorage.Execute += deleteStorage_Execute;
         }
 
         /// <summary>
@@ -57,5 +64,28 @@ namespace Solution.Module.Controllers
             ObjectSpace.CommitChanges();
             ObjectSpace.Refresh();
         }
+
+        /// <summary>
+        /// Создание склада
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void deleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
+        //{
+        //    // Выборка склада по дате создания
+        //    var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>()
+        //    .OrderByDescending(p => p.Name)
+        //    .FirstOrDefault();
+        //
+        //    // Создание пустого объекта 
+        //    Storage newStorage = new Storage(((XPObjectSpace)ObjectSpace).Session);
+        //
+        //    // Формирование названия объекта
+        //    newStorage.Name = lastStorage != null ? lastStorage.Name + 1 : 1;
+        //
+        //    //Сохранение изменений
+        //    ObjectSpace.CommitChanges();
+        //    ObjectSpace.Refresh();
+        //}
     }
 }
