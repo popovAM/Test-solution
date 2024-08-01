@@ -54,6 +54,7 @@ namespace Solution.Module.BusinessObjects
         /// Пикет, на котором находится груз
         /// </summary>
         [Association("Picket-CargoPickets")]
+        [VisibleInDetailView(false)]
         public Picket Picket
         {
             get { return _picket; }

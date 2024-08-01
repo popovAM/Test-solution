@@ -34,6 +34,7 @@ namespace Solution.Module.BusinessObjects
         /// Номер пикета, для формирования площадки
         /// </summary>
         [Index(0)]
+        [ModelDefault("AllowEdit", "false")]
         public int Number
         {
             get { return _number; }
@@ -58,7 +59,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Занят грузом или нет
         /// </summary>
-        [VisibleInListView(false), VisibleInDetailView(false)]
+        [VisibleInDetailView(false)]
         public bool IsFull
         {
             get { return _isFull; }
@@ -70,6 +71,7 @@ namespace Solution.Module.BusinessObjects
         /// </summary>
         [Index(2)]
         [Association("Platform-Pickets")]
+        [ModelDefault("AllowEdit", "false")]
         public Platform Platform
         {
             get { return _platform; }
