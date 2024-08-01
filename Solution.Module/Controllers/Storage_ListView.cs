@@ -82,7 +82,7 @@ namespace Solution.Module.Controllers
                 bool isEmpty = true;
                 foreach (var picket in lastStorage.Pickets)
                 {
-                    if (!picket.CargoPickets.Any())
+                    if (picket.CargoPickets.Any())
                     {
                         isEmpty = false;
                         break;
