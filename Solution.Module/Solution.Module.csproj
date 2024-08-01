@@ -136,6 +136,9 @@
     <EmbeddedResource Include="Controllers\Picket_ListView.resx">
       <DependentUpon>Picket_ListView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Platform_ListView.resx">
+      <DependentUpon>Platform_ListView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controllers\Storage_ListView.resx">
       <DependentUpon>Storage_ListView.cs</DependentUpon>
     </EmbeddedResource>
