@@ -1,7 +1,7 @@
 ﻿
 namespace Solution.Module.Controllers
 {
-    partial class Platform
+    partial class Platform_ListView
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,11 @@ namespace Solution.Module.Controllers
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            // 
+            // Platform_ListView
+            // 
+            this.TargetViewId = "Storage_Platforms_ListView";
+
         }
 
         #endregion

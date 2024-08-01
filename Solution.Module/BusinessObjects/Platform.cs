@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using DevExpress.ExpressApp.ConditionalAppearance;
+using DevExpress.ExpressApp.Editors;
 
 namespace Solution.Module.BusinessObjects
 {
@@ -27,6 +29,7 @@ namespace Solution.Module.BusinessObjects
         
         private string _name;
         private Storage _storage;
+
 
         /// <summary>
         /// Название площадки
