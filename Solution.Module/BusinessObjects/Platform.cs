@@ -21,19 +21,19 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     public class Platform : BaseObject
-    { 
+    {
         public Platform(Session session)
             : base(session)
         {
         }
-        
+
         private string _name;
         private Storage _storage;
-
 
         /// <summary>
         /// Название площадки
         /// </summary>
+        [Index(0)]
         public string Name
         {
             get { return _name; }
@@ -44,6 +44,7 @@ namespace Solution.Module.BusinessObjects
         /// Склад, к которому относится площадка
         /// </summary>
         [Association("Storage-Platforms")]
+        [VisibleInListView(false)]
         public Storage Storage
         {
             get { return _storage; }
@@ -54,6 +55,7 @@ namespace Solution.Module.BusinessObjects
         /// Список пикетов
         /// </summary>
         [Association("Platform-Pickets")]
+        [VisibleInListView(false)]
         public XPCollection<Picket> Pickets
         {
             get
@@ -65,7 +67,10 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Общий вес площадки
         /// </summary>
+        [Index(1)]
         [ImmediatePostData]
+        [ModelDefault("EditMask", "#,###,###,###,###.###")]
+        [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         public decimal Weight
         {
             get

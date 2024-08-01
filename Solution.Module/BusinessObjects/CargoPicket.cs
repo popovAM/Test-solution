@@ -29,7 +29,7 @@ namespace Solution.Module.BusinessObjects
         private Cargo _cargo;
         private decimal _weight;
         private Picket _picket;
-
+        
         /// <summary>
         /// Груз
         /// </summary>

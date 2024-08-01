@@ -18,6 +18,7 @@ namespace Solution.Module.BusinessObjects
     /// Склад
     /// </summary>
     [DefaultClassOptions]
+    [DefaultProperty(nameof(Name))]
     public class Storage : BaseObject
     { 
         public Storage(Session session)

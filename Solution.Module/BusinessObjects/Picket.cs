@@ -18,6 +18,7 @@ namespace Solution.Module.BusinessObjects
     /// Пикет
     /// </summary>
     [DefaultClassOptions]
+    [DefaultProperty(nameof(Number))]
     public class Picket : BaseObject
     { 
         public Picket(Session session)
@@ -42,6 +43,7 @@ namespace Solution.Module.BusinessObjects
         }
 
         [Index(0)]
+        [ModelDefault("AllowEdit", "false")]
         public int Number
         {
             get { return _number; }
@@ -53,7 +55,7 @@ namespace Solution.Module.BusinessObjects
         /// </summary>
         [Association("Storage-Pickets")]
         [ImmediatePostData]
-        [Index(1)]
+        [VisibleInListView(false), VisibleInLookupListView(true)]
         public Storage Storage
         {
             get { return _storage; }
@@ -66,7 +68,8 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Занят грузом или нет
         /// </summary>
-        [VisibleInListView(false), VisibleInDetailView(false)]
+        [Index(2)]
+        [VisibleInDetailView(false)]
         public bool IsFull
         {
             get { return _isFull; }
@@ -76,8 +79,9 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Площадка, в которую включен пикет
         /// </summary>
-        [Index(2)]
+        [Index(1)]
         [Association("Platform-Pickets")]
+        [ModelDefault("AllowEdit", "false"), VisibleInLookupListView(true)]
         public Platform Platform
         {
             get { return _platform; }
@@ -88,6 +92,7 @@ namespace Solution.Module.BusinessObjects
         /// Журнал расхода груза на площадке
         ///</summary>
         [Association("Picket-CargoPickets")]
+        [VisibleInDetailView(false)]
         public XPCollection<CargoPicket> CargoPickets
         {
             get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
