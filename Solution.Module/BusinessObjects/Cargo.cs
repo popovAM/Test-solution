@@ -1,5 +1,6 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
@@ -18,6 +19,7 @@ namespace Solution.Module.BusinessObjects
     /// Справочник груза
     /// </summary>
     [DefaultClassOptions]
+    [Appearance("NotEnabledFields", TargetItems = "*", Context = "DetailView", Enabled = false, Criteria = "!IsNewObject(this)")]
     public class Cargo : BaseObject
     {
         public Cargo(Session session)
@@ -39,15 +41,14 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(Name), ref _name, value); }
         }
         
-
         /// <summary>
         /// Тип груза
         /// </summary>
+        [Index(1)]
         public Type CargoType
         {
             get { return _cargoType; }
             set { SetPropertyValue(nameof(CargoType), ref _cargoType, value); }
-
         }
 
         /// <summary>
@@ -60,6 +61,5 @@ namespace Solution.Module.BusinessObjects
             Bulk,
             Liquid
         }
-
     }
 }

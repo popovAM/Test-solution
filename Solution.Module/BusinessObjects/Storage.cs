@@ -14,6 +14,9 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Склад
+    /// </summary>
     [DefaultClassOptions]
     public class Storage : BaseObject
     { 
@@ -21,11 +24,7 @@ namespace Solution.Module.BusinessObjects
             : base(session)
         {
         }
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();            
-        }
-
+        
         private int _name;
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace Solution.Module.BusinessObjects
         }
 
         /// <summary>
-        /// Коллекция пикетов склада
+        /// Коллекция площадок склада
         /// </summary>
         [DevExpress.Xpo.Aggregated, Association("Storage-Platforms")]
         public XPCollection<Platform> Platforms
