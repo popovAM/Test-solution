@@ -58,7 +58,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Занят грузом или нет
         /// </summary>
-        [VisibleInListView(false)]
+        [VisibleInListView(false), VisibleInDetailView(false)]
         public bool IsFull
         {
             get { return _isFull; }
@@ -74,6 +74,15 @@ namespace Solution.Module.BusinessObjects
         {
             get { return _platform; }
             set { SetPropertyValue(nameof(Platform), ref _platform, value); }
+        }
+
+        ///<summary>
+        /// Журнал расхода груза на площадке
+        ///</summary>
+        [Association("Picket-CargoPickets")]
+        public XPCollection<CargoPicket> CargoPickets
+        {
+            get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
         }
     }
 }

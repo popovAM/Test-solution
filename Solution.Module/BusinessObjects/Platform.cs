@@ -59,25 +59,16 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
-        /////<summary>
-        ///// Журнал расхода груза на площадке
-        /////</summary>
-        //[Association("Platform-CargoPickets")]
-        //public XPCollection<CargoPicket> CargoPickets
-        //{
-        //    get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
-        //}
-
-        ///// <summary>
-        ///// Общий вес площадки
-        ///// </summary>
-        //[ImmediatePostData]
-        //public decimal Weight
-        //{
-        //    get
-        //    {
-        //        return CargoPickets.Sum(c => c.Weight);
-        //    }
-        //}
+        /// <summary>
+        /// Общий вес площадки
+        /// </summary>
+        [ImmediatePostData]
+        public decimal Weight
+        {
+            get
+            {
+                return Pickets.Sum(p => p.CargoPickets.Sum(c => c.Weight));
+            }
+        }
     }
 }
