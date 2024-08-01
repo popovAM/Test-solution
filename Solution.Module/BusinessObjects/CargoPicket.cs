@@ -33,6 +33,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Груз
         /// </summary>
+        [Index(1)]
         public Cargo Cargo
         {
             get { return _cargo; }
@@ -42,6 +43,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Вес груза
         /// </summary>
+        [Index(2)]
         [ModelDefault("EditMask", "#,###,###,###,###.###")]
         [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         public decimal Weight
@@ -53,11 +55,20 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Пикет, на котором находится груз
         /// </summary>
+        [Index(0)]
         [Association("Picket-CargoPickets")]
+        [DataSourceCriteria("[Platform] is not null")]
         public Picket Picket
         {
             get { return _picket; }
-            set { SetPropertyValue(nameof(Picket), ref _picket, value); }
+            set 
+            { 
+                bool IsEdit = SetPropertyValue(nameof(Picket), ref _picket, value);
+                if (!IsLoading && !IsSaving && IsEdit)
+                {
+                    Picket.IsFull = true;
+                }
+            }
         }
     }
 }

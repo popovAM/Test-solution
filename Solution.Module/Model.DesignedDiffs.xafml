@@ -7,10 +7,49 @@
       </OwnMembers>
     </Class>
   </BOModel>
+  <CreatableItems>
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.CargoPicket" Removed="True" />
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.Picket" Removed="True" />
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.Platform" Removed="True" />
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.Storage" Removed="True" />
+  </CreatableItems>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
   <SchemaModules>
     <SchemaModule Name="SystemModule" Version="17.2.4.0" IsNewNode="True" />
   </SchemaModules>
+  <Views>
+    <DetailView Id="Cargo_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="True" />
+    <ListView Id="Cargo_ListView" AllowDelete="True" />
+    <ListView Id="Cargo_LookupListView" AllowDelete="False" AllowNew="False" />
+    <ListView Id="Picket_CargoPickets_ListView" AllowDelete="False" AllowNew="False" />
+    <DetailView Id="Picket_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="False" />
+    <ListView Id="Picket_ListView" AllowDelete="False" AllowNew="False">
+      <Columns>
+        <ColumnInfo Id="Number" SortOrder="Ascending" SortIndex="1" />
+        <ColumnInfo Id="Storage" SortOrder="Ascending" SortIndex="0" />
+        <ColumnInfo Id="Name" SortIndex="-1" SortOrder="None" />
+      </Columns>
+    </ListView>
+    <ListView Id="Picket_LookupListView" AllowDelete="False" AllowNew="False">
+      <Columns>
+        <ColumnInfo Id="Storage" SortOrder="Ascending" SortIndex="0" />
+        <ColumnInfo Id="Number" SortIndex="1" SortOrder="Ascending" />
+      </Columns>
+    </ListView>
+    <DetailView Id="Platform_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="False" />
+    <ListView Id="Platform_ListView" AllowNew="False" AllowDelete="False" />
+    <ListView Id="Platform_LookupListView" AllowDelete="False" AllowNew="False" />
+    <DetailView Id="Storage_DetailView" AllowDelete="False" AllowNew="False" AllowEdit="False" />
+    <ListView Id="Storage_ListView" AllowNew="False" AllowDelete="False" />
+    <ListView Id="Storage_LookupListView" AllowNew="False" AllowDelete="False" />
+    <ListView Id="Storage_Pickets_ListView" AllowDelete="False" AllowLink="False" AllowNew="False">
+      <Columns>
+        <ColumnInfo Id="Number" SortIndex="0" SortOrder="Ascending" />
+        <ColumnInfo Id="Name" SortIndex="-1" SortOrder="None" />
+      </Columns>
+    </ListView>
+    <ListView Id="Storage_Platforms_ListView" AllowDelete="False" AllowNew="False" />
+  </Views>
 </Application>
