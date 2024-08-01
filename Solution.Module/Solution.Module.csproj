@@ -105,6 +105,12 @@
     <Compile Include="BusinessObjects\Platform.cs" />
     <Compile Include="BusinessObjects\Storage.cs" />
     <Compile Include="BusinessObjects\Cargo.cs" />
+    <Compile Include="Controllers\Platform_ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\Platform_ListView.Designer.cs">
+      <DependentUpon>Platform_ListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Picket_ListView.cs">
       <SubType>Component</SubType>
     </Compile>
