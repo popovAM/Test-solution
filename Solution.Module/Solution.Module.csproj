@@ -111,6 +111,12 @@
     <Compile Include="Controllers\Picket_ListView.Designer.cs">
       <DependentUpon>Picket_ListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Storage_ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\Storage_ListView.Designer.cs">
+      <DependentUpon>Storage_ListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseUpdate\Updater.cs" />
     <Compile Include="Module.cs">
       <SubType>Component</SubType>
@@ -123,6 +129,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Controllers\Picket_ListView.resx">
       <DependentUpon>Picket_ListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Storage_ListView.resx">
+      <DependentUpon>Storage_ListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model.DesignedDiffs.xafml" />
     <EmbeddedResource Include="Module.resx">
