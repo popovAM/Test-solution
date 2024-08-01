@@ -1,8 +1,16 @@
-﻿<?xml version="1.0" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Application Title="Solution">
+  <BOModel>
+    <Class Name="Solution.Module.BusinessObjects.CargoPicket">
+      <OwnMembers>
+        <Member Name="Weight" EditMaskType="Simple" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
-  <Views>
-  </Views>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="17.2.4.0" IsNewNode="True" />
+  </SchemaModules>
 </Application>
