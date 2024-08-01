@@ -11,6 +11,7 @@ using DevExpress.Xpo;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
+using Solution.Module.BusinessObjects;
 
 namespace Solution.Module.DatabaseUpdate
 {
