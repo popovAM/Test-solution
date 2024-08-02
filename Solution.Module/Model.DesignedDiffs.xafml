@@ -23,6 +23,9 @@
     <DetailView Id="Cargo_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="True" />
     <ListView Id="Cargo_ListView" AllowDelete="True" />
     <ListView Id="Cargo_LookupListView" AllowDelete="False" AllowNew="False" />
+    <DetailView Id="CargoPicket_DetailView" AllowNew="True" />
+    <ListView Id="CargoPicket_ListView" AllowNew="False" />
+    <ListView Id="CargoPicket_LookupListView" AllowNew="False" AllowDelete="False" />
     <ListView Id="Picket_CargoPickets_ListView" AllowDelete="False" AllowNew="False" />
     <DetailView Id="Picket_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="False" />
     <ListView Id="Picket_ListView" AllowDelete="False" AllowNew="False">
