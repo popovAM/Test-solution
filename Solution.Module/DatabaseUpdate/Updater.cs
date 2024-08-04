@@ -115,12 +115,12 @@ namespace Solution.Module.DatabaseUpdate
             //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Write, SecurityPermissionState.Deny);
             //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Create, SecurityPermissionState.Deny);
             //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Delete, SecurityPermissionState.Deny);
-            //
-            //// Разрешения для объектов CargoAuditTrail
-            //role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Read, SecurityPermissionState.Allow);
-            //role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Write, SecurityPermissionState.Deny);
-            //role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Create, SecurityPermissionState.Deny);
-            //role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+            // Разрешения для объектов CargoAuditTrail
+            role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Read, SecurityPermissionState.Allow);
+            role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Write, SecurityPermissionState.Deny);
+            role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Create, SecurityPermissionState.Deny);
+            role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Delete, SecurityPermissionState.Deny);
 
             return role;
         }
