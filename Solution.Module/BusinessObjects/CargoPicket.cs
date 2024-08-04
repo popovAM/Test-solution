@@ -18,18 +18,19 @@ namespace Solution.Module.BusinessObjects
     /// Документ связей грузов и пикетов
     /// </summary>
     [DefaultClassOptions]
-    
+
     public class CargoPicket : BaseObject
     {
         public CargoPicket(Session session)
             : base(session)
         {
         }
-        
+
         private Cargo _cargo;
         private decimal _weight;
         private Picket _picket;
-        
+        private decimal _previousWeight;
+
         /// <summary>
         /// Груз
         /// </summary>
@@ -46,6 +47,9 @@ namespace Solution.Module.BusinessObjects
         [Index(2)]
         [ModelDefault("EditMask", "#,###,###,###,###.###")]
         [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
+        [DetailViewLayout(LayoutColumnPosition.Left)]
+        [RuleRequiredField("RuleRequiredField for CargoPicket.Weight", DefaultContexts.Save, "Weight cannot be empty.", SkipNullOrEmptyValues = false)]
+        [RuleValueComparison("", DefaultContexts.Save, ValueComparisonType.GreaterThanOrEqual, "0")]
         public decimal Weight
         {
             get { return _weight; }
@@ -61,14 +65,24 @@ namespace Solution.Module.BusinessObjects
         public Picket Picket
         {
             get { return _picket; }
-            set 
-            { 
+            set
+            {
                 bool IsEdit = SetPropertyValue(nameof(Picket), ref _picket, value);
                 if (!IsLoading && !IsSaving && IsEdit)
                 {
                     Picket.IsFull = true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Свойство для хранения предыдущего веса
+        /// </summary>
+        [ModelDefault("AllowEdit", "False")]
+        public decimal PreviousWeight
+        {
+            get { return _previousWeight; }
+            set { SetPropertyValue(nameof(PreviousWeight), ref _previousWeight, value); }
         }
     }
 }
