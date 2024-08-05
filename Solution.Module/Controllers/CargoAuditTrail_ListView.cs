@@ -10,9 +10,12 @@ using DevExpress.ExpressApp.Utils;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.Validation;
+using DevExpress.Xpo;
+using OfficeOpenXml;
 using Solution.Module.BusinessObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -21,6 +24,8 @@ namespace Solution.Module.Controllers
     // For more typical usage scenarios, be sure to check out https://documentation.devexpress.com/eXpressAppFramework/clsDevExpressExpressAppViewControllertopic.aspx.
     public partial class CargoAuditTrail_ListView : ViewController
     {
+
+        #region Constructor
         public CargoAuditTrail_ListView()
         {
             InitializeComponent();
@@ -33,6 +38,9 @@ namespace Solution.Module.Controllers
 
             Report.Execute += Report_Execute;
         }
+        #endregion
+
+        #region Форма заполения параметров отчета
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             //Создаём диалоговое окно
@@ -47,7 +55,7 @@ namespace Solution.Module.Controllers
             addController.SaveOnAccept = true;
             addController.AcceptAction.Execute += (s, args) =>
             {
-                //Добавление записи в журнал изменений
+                AddReport(newReport);
             };
 
             //Задаём параметры диалогового окна
@@ -57,6 +65,9 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Clear();
             e.ShowViewParameters.Controllers.Add(addController);
         }
+        #endregion
+
+        #region Protected Methods
         protected override void OnActivated()
         {
             base.OnActivated();
@@ -71,6 +82,50 @@ namespace Solution.Module.Controllers
         {
             // Unsubscribe from previously subscribed events and release other references and resources.
             base.OnDeactivated();
+        }
+        #endregion
+
+        #region Создание отчета
+        private void AddReport(Report newReport)
+        {
+            DateTime now = DateTime.Now;
+
+            var session = ((XPObjectSpace)ObjectSpace).Session;
+
+            var cargoAuditTrails = session.Query<CargoAuditTrail>()
+                .Where(p => p.OperationDateTime >= newReport.BeginDateTime
+                && p.OperationDateTime <= newReport.EndDateTime)
+                .ToList();
+
+            string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
+            string relativePath = Path.Combine("Reports", fileName);
+            string fullPath = Path.GetFullPath(relativePath);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+
+            using (var source = File.Create(fullPath))
+            {
+                using (var p = new ExcelPackage(source))
+                {
+                    var ws = p.Workbook.Worksheets.Add("List");
+                    int Row = 1, Col = 1;
+
+                    foreach (var cargoAuditTrail in cargoAuditTrails)
+                    {
+
+                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Picket;
+                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Cargo;
+                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
+                        ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationType;
+                        ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime;
+
+                        Row++;
+                        Col = 1;
+                    }
+                    p.Save();
+                }
+            }
+            #endregion
         }
     }
 }

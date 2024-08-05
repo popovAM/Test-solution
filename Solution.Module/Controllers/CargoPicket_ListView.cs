@@ -164,7 +164,7 @@ namespace Solution.Module.Controllers
             CargoAuditTrail newRecord = new CargoAuditTrail(((XPObjectSpace)context).Session)
             {
                 //Заполение полей новой записи
-                TimeOperation = DateTime.Now,
+                OperationDateTime = DateTime.Now,
                 Picket = cargoPicket.Picket.Name,
                 Cargo = cargoPicket.Cargo.Name,
                 Weight = cargoPicket.Weight
