@@ -111,11 +111,11 @@ namespace Solution.Module.Controllers
                     int storageNumber = currentObject.Storage.Name;
 
                     //Удаление площадки и сохранение изменений
+                    CreateNewRecord(currentObject, false);
                     ObjectSpace.Delete(currentObject);
                     ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Platforms)));
                     ObjectSpace.CommitChanges();
 
-                    //CreateNewRecord(platformName, storageNumber, false);
                 }
             }
             //Если на площадке присутствует груз 
@@ -154,9 +154,9 @@ namespace Solution.Module.Controllers
                 newPlatform.Name = selectedPickets[0].Number.ToString() + "-" + selectedPickets[selectedPickets.Count - 1].Number.ToString();
 
                 //Сохраняем изменения
+                CreateNewRecord(newPlatform, true);
                 ObjectSpace.CommitChanges();
 
-                //CreateNewRecord(newPlatform.Name, newPlatform.Storage.Name, true);
             }
             //Если список неправильный
             else
@@ -171,30 +171,31 @@ namespace Solution.Module.Controllers
         /// <param name="platformName"></param>
         /// <param name="storageNumber"></param>
         /// <param name="isCreated"></param>
-        /*
-        private void CreateNewRecord(string platformName, int storageNumber, bool isCreated)
+        private void CreateNewRecord(Platform currentObject, bool isCreated)
         {
             //Создание новой записи и заполнение данных 
             var context = Application.CreateObjectSpace(typeof(PlatformAuditTrail));
-            PlatformAuditTrail newRecord = new PlatformAuditTrail(((XPObjectSpace)context).Session);
-            newRecord.Platform = platformName;
-            newRecord.Storage = storageNumber;
+            PlatformAuditTrail newRecord = new PlatformAuditTrail(((XPObjectSpace)context).Session)
+            {
+                TimeOperation = DateTime.Now,
+                Platform = currentObject.Name,
+                Storage = currentObject.Storage.Name
+            };
 
             //Проверка статуса площадки (создана или расформирована)
             if (isCreated)
             {
-                newRecord.Status = "Создана";
+                newRecord.Status = PlatformAuditTrail.PlatformStatus.Created;
             }
             else
             {
-                newRecord.Status = "Расформирована";
+                newRecord.Status = PlatformAuditTrail.PlatformStatus.Deleted;
             }
 
             //Сохранение изменений
             context.CommitChanges();
             context.Refresh();
         }
-        */
 
         /// <summary>
         /// Обновление родительского объекта
