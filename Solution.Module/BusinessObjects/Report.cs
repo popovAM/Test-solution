@@ -18,7 +18,6 @@ namespace Solution.Module.BusinessObjects
     public class Report : BaseObject
     { 
         #region Fields
-        private string _fileName;
         private DateTime _beginDateTime;
         private DateTime _endDateTime;
         private DateTime _creationDateTime;
@@ -45,14 +44,6 @@ namespace Solution.Module.BusinessObjects
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Название файла
-        /// </summary>
-        public string FileName
-        {
-            get { return _fileName; }
-            set { SetPropertyValue(nameof(FileName), ref _fileName, value); }
-        }
 
         /// <summary>
         /// Дата и время начала 

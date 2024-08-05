@@ -28,12 +28,13 @@ namespace Solution.Module.BusinessObjects
         public override void AfterConstruction()
         {
             base.AfterConstruction();
+            _operationDateTime = DateTime.Now;
         }
 
         private decimal _weight;
         private string _picket;
         private string _cargo;
-        private DateTime _timeOperation;
+        private DateTime _operationDateTime;
         private CargoStatus _operationType;
 
         /// <summary>
@@ -74,10 +75,10 @@ namespace Solution.Module.BusinessObjects
         [ModelDefault("DisplayFormat", "{0:dd.MM.yyyy HH:mm:ss}")]
         [ModelDefault("EditFormat", "dd.MM.yyyy HH:mm:ss")]
         [ModelDefault("EditMask", "dd.MM.yyyy HH:mm:ss")]
-        public DateTime TimeOperation
+        public DateTime OperationDateTime
         {
-            get { return _timeOperation; }
-            set { SetPropertyValue(nameof(TimeOperation), ref _timeOperation, value); }
+            get { return _operationDateTime; }
+            set { SetPropertyValue(nameof(OperationDateTime), ref _operationDateTime, value); }
         }
 
         /// <summary>
