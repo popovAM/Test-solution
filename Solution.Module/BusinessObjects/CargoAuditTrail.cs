@@ -34,7 +34,7 @@ namespace Solution.Module.BusinessObjects
         private string _picket;
         private string _cargo;
         private DateTime _timeOperation;
-        private CargoStatus _status;
+        private CargoStatus _operationType;
 
         /// <summary>
         /// Вес на определенный момент времени
@@ -84,10 +84,10 @@ namespace Solution.Module.BusinessObjects
         /// Статус груза
         /// </summary>
         [Index(5)]
-        public CargoStatus Status
+        public CargoStatus OperationType
         {
-            get { return _status; }
-            set { SetPropertyValue(nameof(Status), ref _status, value); }
+            get { return _operationType; }
+            set { SetPropertyValue(nameof(OperationType), ref _operationType, value); }
         }
         [Flags]
         public enum CargoStatus
