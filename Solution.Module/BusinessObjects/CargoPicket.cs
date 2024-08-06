@@ -88,8 +88,8 @@ namespace Solution.Module.BusinessObjects
 
         public enum OperationType
         {
-            inflow,
-            outflow
+            Inflow,
+            Outflow
         }
 
     }
