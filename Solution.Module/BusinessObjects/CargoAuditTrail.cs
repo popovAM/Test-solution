@@ -94,9 +94,7 @@ namespace Solution.Module.BusinessObjects
         public enum CargoStatus
         {
             Загрузка = 0b_0000_0000,
-            Выгрузка = 0b_0000_0001,
-            Освобождение = 0b_0000_0010,
-            Добавление = 0b_0000_0100
+            Выгрузка = 0b_0000_0001
         }
     }
 }
