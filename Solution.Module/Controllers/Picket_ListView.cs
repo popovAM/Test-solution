@@ -98,8 +98,7 @@ namespace Solution.Module.Controllers
 
                 // Задаем номер пикета, исходя из запроса
                 newPicket.Number = lastPicket != null ? lastPicket.Number + 1 : 1;
-
-                newPicket.IsFull = false;
+                newPicket.IsActive = true;
 
                 //Сохранение изменений
                 ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Pickets)));
@@ -130,7 +129,7 @@ namespace Solution.Module.Controllers
                     // Удаление пикета, если он без площадки
                     if (lastPicket.Platform == null)
                     {
-                        ObjectSpace.Delete(lastPicket);
+                        lastPicket.IsActive = false;
                         ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Pickets)));
                         ObjectSpace.CommitChanges();
                     }

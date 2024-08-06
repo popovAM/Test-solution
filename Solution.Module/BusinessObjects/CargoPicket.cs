@@ -19,7 +19,7 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
 
-    public class CargoPicket : BaseObject
+    public class CargoPicket : Verification
     {
         public CargoPicket(Session session)
             : base(session)
@@ -30,6 +30,7 @@ namespace Solution.Module.BusinessObjects
         private decimal _weight;
         private Picket _picket;
         private decimal _previousWeight;
+        private OperationType _status;
 
         /// <summary>
         /// Груз
@@ -65,24 +66,31 @@ namespace Solution.Module.BusinessObjects
         public Picket Picket
         {
             get { return _picket; }
-            set
-            {
-                bool IsEdit = SetPropertyValue(nameof(Picket), ref _picket, value);
-                if (!IsLoading && !IsSaving && IsEdit)
-                {
-                    Picket.IsFull = true;
-                }
-            }
+            set { SetPropertyValue(nameof(Picket), ref _picket, value); }
         }
 
         /// <summary>
         /// Свойство для хранения предыдущего веса
         /// </summary>
         [ModelDefault("AllowEdit", "False")]
+        [VisibleInListView(false), VisibleInDetailView(false)]
         public decimal PreviousWeight
         {
             get { return _previousWeight; }
             set { SetPropertyValue(nameof(PreviousWeight), ref _previousWeight, value); }
         }
+
+        public OperationType Status
+        {
+            get { return _status; }
+            set { SetPropertyValue(nameof(Status), ref _status, value); }
+        }
+
+        public enum OperationType
+        {
+            inflow,
+            outflow
+        }
+
     }
 }

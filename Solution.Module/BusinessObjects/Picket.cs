@@ -19,7 +19,7 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
-    public class Picket : BaseObject
+    public class Picket : Verification
     { 
         public Picket(Session session)
             : base(session)
@@ -28,7 +28,6 @@ namespace Solution.Module.BusinessObjects
         
         private Storage _storage;
         private Platform _platform;
-        private bool _isFull;
         private int _number;
 
         /// <summary>
@@ -67,17 +66,6 @@ namespace Solution.Module.BusinessObjects
             {
                 SetPropertyValue(nameof(Storage), ref _storage, value);
             }
-        }
-
-        /// <summary>
-        /// Занят грузом или нет
-        /// </summary>
-        [Index(4)]
-        [VisibleInListView(true), VisibleInDetailView(false), VisibleInLookupListView(false)]
-        public bool IsFull
-        {
-            get { return _isFull; }
-            set { SetPropertyValue(nameof(IsFull), ref _isFull, value); }
         }
 
         /// <summary>
