@@ -110,9 +110,13 @@ namespace Solution.Module.Controllers
 
                     //Удаление площадки и сохранение изменений
                     currentObject.IsActive = false;
+                    currentObject.PlatformAudits.Add(new PlatformAuditTrail(((XPObjectSpace)ObjectSpace).Session)
+                    {
+                        TimeOperation = DateTime.Now,
+                        Status = PlatformAuditTrail.PlatformStatus.Deleted
+                    });
                     ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Platforms)));
                     ObjectSpace.CommitChanges();
-
                 }
             }
             //Если на площадке присутствует груз 
@@ -153,6 +157,11 @@ namespace Solution.Module.Controllers
                 }
                 newPlatform.Name = selectedPickets[0].Number.ToString() + "-" + selectedPickets[selectedPickets.Count - 1].Number.ToString();
 
+                newPlatform.PlatformAudits.Add(new PlatformAuditTrail(((XPObjectSpace)ObjectSpace).Session)
+                { 
+                    TimeOperation = DateTime.Now, 
+                    Status = PlatformAuditTrail.PlatformStatus.Created 
+                });
                 //Сохраняем изменения
                 ObjectSpace.CommitChanges();
             }
