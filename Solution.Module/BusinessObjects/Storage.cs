@@ -19,7 +19,7 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
-    public class Storage : BaseObject
+    public class Storage : Verification
     { 
         public Storage(Session session)
             : base(session)

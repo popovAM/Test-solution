@@ -49,7 +49,7 @@ namespace Solution.Module.Controllers
         private void createStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             // Выборка склада по дате создания
-            var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>()
+            var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>().Where(p => p.IsActive == true)
             .OrderByDescending(p => p.Name)
             .FirstOrDefault();
 
@@ -63,30 +63,31 @@ namespace Solution.Module.Controllers
             ObjectSpace.CommitChanges();
             ObjectSpace.Refresh();
         }
-
-        /// <summary>
-        /// Создание склада
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void deleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
-            Storage selectedStorage = (Storage)ObjectSpace.GetObject(View.CurrentObject);
+            Storage selectedStorage = (Storage)((XPObjectSpace)ObjectSpace).GetObject(View.CurrentObject);
 
-            if (selectedStorage != null)
+            bool IsCorrect = true;
+
+            foreach (var item in selectedStorage.Platforms)
             {
-                bool isEmpty = true;
-                foreach (var picket in selectedStorage.Pickets)
-                {
-                    if (picket.CargoPickets.Any())
-                    {
-                        isEmpty = false;
-                        break;
-                    }
-                }
-                if (isEmpty == true) ObjectSpace.Delete(selectedStorage);
-                else throw new UserFriendlyException("На пикетах находятся грузы.");
+                if (item.IsActive == true && item.Weight != 0)
+                    IsCorrect = false;
             }
+            if (IsCorrect == true)
+            {
+                foreach (var item in selectedStorage.Platforms)
+                {
+                    item.IsActive = false;
+                }
+                foreach (var item in selectedStorage.Pickets)
+                {
+                    item.IsActive = false;
+                }
+                selectedStorage.IsActive = false;
+            }
+
             //Сохранение изменений
             ObjectSpace.CommitChanges();
             ObjectSpace.Refresh();

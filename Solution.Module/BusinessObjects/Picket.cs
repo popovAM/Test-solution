@@ -72,13 +72,23 @@ namespace Solution.Module.BusinessObjects
         /// Площадка, в которую включен пикет
         /// </summary>
         [Index(3)]
-        [Association("Platform-Pickets")]
         [ModelDefault("AllowEdit", "false"), VisibleInLookupListView(true)]
         public Platform Platform
         {
             get { return _platform; }
             set { SetPropertyValue(nameof(Platform), ref _platform, value); }
         }
+
+        /// <summary>
+        /// Коллекция скрытых площадок
+        /// </summary>
+        [Association("Platforms-Pickets")]
+        [VisibleInDetailView(false)]
+        public XPCollection<Platform> NotActivePlatforms
+        {
+            get { return GetCollection<Platform>(nameof(NotActivePlatforms)); }
+        }
+
 
         ///<summary>
         /// Журнал расхода груза на площадке
