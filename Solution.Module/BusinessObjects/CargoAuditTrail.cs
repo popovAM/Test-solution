@@ -28,13 +28,14 @@ namespace Solution.Module.BusinessObjects
         public override void AfterConstruction()
         {
             base.AfterConstruction();
+            _operationDateTime = DateTime.Now;
         }
 
         private decimal _weight;
         private string _picket;
         private string _cargo;
-        private DateTime _timeOperation;
-        private CargoStatus _status;
+        private DateTime _operationDateTime;
+        private CargoStatus _operationType;
 
         /// <summary>
         /// Вес на определенный момент времени
@@ -74,20 +75,20 @@ namespace Solution.Module.BusinessObjects
         [ModelDefault("DisplayFormat", "{0:dd.MM.yyyy HH:mm:ss}")]
         [ModelDefault("EditFormat", "dd.MM.yyyy HH:mm:ss")]
         [ModelDefault("EditMask", "dd.MM.yyyy HH:mm:ss")]
-        public DateTime TimeOperation
+        public DateTime OperationDateTime
         {
-            get { return _timeOperation; }
-            set { SetPropertyValue(nameof(TimeOperation), ref _timeOperation, value); }
+            get { return _operationDateTime; }
+            set { SetPropertyValue(nameof(OperationDateTime), ref _operationDateTime, value); }
         }
 
         /// <summary>
         /// Статус груза
         /// </summary>
         [Index(5)]
-        public CargoStatus Status
+        public CargoStatus OperationType
         {
-            get { return _status; }
-            set { SetPropertyValue(nameof(Status), ref _status, value); }
+            get { return _operationType; }
+            set { SetPropertyValue(nameof(OperationType), ref _operationType, value); }
         }
         [Flags]
         public enum CargoStatus

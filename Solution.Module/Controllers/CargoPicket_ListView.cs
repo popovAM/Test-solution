@@ -42,6 +42,8 @@ namespace Solution.Module.Controllers
                 ImageName = "MenuBar_Edit"
             };
 
+            
+
             AddCargo.Execute += AddCargo_Execute;
             EditCargo.Execute += EditCargo_Execute;
         }
@@ -162,7 +164,7 @@ namespace Solution.Module.Controllers
             CargoAuditTrail newRecord = new CargoAuditTrail(((XPObjectSpace)context).Session)
             {
                 //Заполение полей новой записи
-                TimeOperation = DateTime.Now,
+                OperationDateTime = DateTime.Now,
                 Picket = cargoPicket.Picket.Name,
                 Cargo = cargoPicket.Cargo.Name,
                 Weight = cargoPicket.Weight
@@ -171,21 +173,21 @@ namespace Solution.Module.Controllers
             // Определение статуса
             if (isAddCargo)
             {
-                newRecord.Status = CargoAuditTrail.CargoStatus.Добавление;
+                newRecord.OperationType = CargoAuditTrail.CargoStatus.Добавление;
             }
             else
             {
                 if (cargoPicket.Weight > cargoPicket.PreviousWeight)
                 {
-                    newRecord.Status = CargoAuditTrail.CargoStatus.Загрузка;
+                    newRecord.OperationType = CargoAuditTrail.CargoStatus.Загрузка;
                 }
                 else if (cargoPicket.Weight < cargoPicket.PreviousWeight)
                 {
-                    newRecord.Status = CargoAuditTrail.CargoStatus.Выгрузка;
+                    newRecord.OperationType = CargoAuditTrail.CargoStatus.Выгрузка;
                 }
                 else if (cargoPicket.Weight == 0 && cargoPicket.PreviousWeight > 0)
                 {
-                    newRecord.Status = CargoAuditTrail.CargoStatus.Освобождение;
+                    newRecord.OperationType = CargoAuditTrail.CargoStatus.Освобождение;
                 }
             }
 
