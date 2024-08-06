@@ -61,7 +61,7 @@ namespace Solution.Module.Controllers
         {
             //Создание диалогового окна со списком пикетов, которые принадлежат текущему складу
             var collectionSource = new CollectionSource(ObjectSpace, typeof(Picket));
-            collectionSource.Criteria["ThisStorage"] = CriteriaOperator.Parse($"[Storage].Oid == '{_storage.Oid}'");
+            collectionSource.Criteria["ThisStorage"] = CriteriaOperator.Parse($"[Storage].Oid == '{_storage.Oid}' AND [IsActive] = true");
             var view = Application.CreateListView("Picket_ListView", collectionSource, false);
             view.Caption = "Добавить пикеты";
 
@@ -102,17 +102,14 @@ namespace Solution.Module.Controllers
                 if (message == DialogResult.Yes)
                 {
                     //Удаление связи площадки со всеми пикетами
-                    while (currentObject.Pickets.Count != 0)
+                    foreach(var item in currentObject.Pickets)
                     {
-                        currentObject.Pickets[0].Platform = null;
+                        item.NotActivePlatforms.Add(currentObject);
+                        item.Platform = null;
                     }
 
-                    string platformName = currentObject.Name;
-                    int storageNumber = currentObject.Storage.Name;
-
                     //Удаление площадки и сохранение изменений
-                    CreateNewRecord(currentObject, false);
-                    ObjectSpace.Delete(currentObject);
+                    currentObject.IsActive = false;
                     ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Platforms)));
                     ObjectSpace.CommitChanges();
 
@@ -150,51 +147,20 @@ namespace Solution.Module.Controllers
                 Platform newPlatform = new Platform(((XPObjectSpace)ObjectSpace).Session);
                 newPlatform.Storage = _storage;
                 foreach (var item in selectedPickets)
+                {
+                    item.Platform = newPlatform;
                     newPlatform.Pickets.Add(item);
+                }
                 newPlatform.Name = selectedPickets[0].Number.ToString() + "-" + selectedPickets[selectedPickets.Count - 1].Number.ToString();
 
                 //Сохраняем изменения
-                CreateNewRecord(newPlatform, true);
                 ObjectSpace.CommitChanges();
-
             }
             //Если список неправильный
             else
             {
                 throw new UserFriendlyException("Площадка должна быть не занята и не разрывна");
             }
-        }
-
-        /// <summary>
-        /// Создание новой записи в журнале изменений
-        /// </summary>
-        /// <param name="platformName"></param>
-        /// <param name="storageNumber"></param>
-        /// <param name="isCreated"></param>
-        private void CreateNewRecord(Platform currentObject, bool isCreated)
-        {
-            //Создание новой записи и заполнение данных 
-            var context = Application.CreateObjectSpace(typeof(PlatformAuditTrail));
-            PlatformAuditTrail newRecord = new PlatformAuditTrail(((XPObjectSpace)context).Session)
-            {
-                TimeOperation = DateTime.Now,
-                Platform = currentObject.Name,
-                Storage = currentObject.Storage.Name
-            };
-
-            //Проверка статуса площадки (создана или расформирована)
-            if (isCreated)
-            {
-                newRecord.Status = PlatformAuditTrail.PlatformStatus.Created;
-            }
-            else
-            {
-                newRecord.Status = PlatformAuditTrail.PlatformStatus.Deleted;
-            }
-
-            //Сохранение изменений
-            context.CommitChanges();
-            context.Refresh();
         }
 
         /// <summary>
@@ -233,7 +199,6 @@ namespace Solution.Module.Controllers
 
             }
         }
-
         protected override void OnDeactivated()
         {
             if (((ListView)View).CollectionSource is PropertyCollectionSource collectionSource)

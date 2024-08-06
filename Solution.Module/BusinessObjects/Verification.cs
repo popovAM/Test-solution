@@ -29,8 +29,8 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Проверка на то, является ли объект активным
         /// </summary>
-        //[VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
-        [VisibleInDetailView(true), VisibleInListView(true), VisibleInLookupListView(true)]
+        [VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
+        //[VisibleInDetailView(true), VisibleInListView(true), VisibleInLookupListView(true)]
         public bool IsActive
         {
             get { return _isActive; }
