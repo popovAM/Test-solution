@@ -28,17 +28,22 @@ namespace Solution.Module.BusinessObjects
 
         private DateTime _timeOperation;
         private PlatformStatus _status;
-        private int _storage;
-        private string _platform;
+        private Platform _platform;
 
 
         /// <summary>
         /// Платформа (головной объект)
-        /// </summary>        
-        public string Platform
+        /// </summary>
+        [Association("Platform-Audits")]
+        public Platform Platform
         {
             get { return _platform; }
             set { SetPropertyValue(nameof(Platform), ref _platform, value); }
+        }
+
+        public string PlatformName
+        {
+            get { return _platform.Name; }
         }
 
         /// <summary>
@@ -60,8 +65,7 @@ namespace Solution.Module.BusinessObjects
         /// </summary>
         public int Storage
         {
-            get { return _storage; }
-            set { SetPropertyValue(nameof(Storage), ref _storage, value); }
+            get { return _platform.Storage.Name; }
         }
 
         /// <summary>

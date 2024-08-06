@@ -40,6 +40,12 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(Name), ref _name, value); }
         }
 
+        [Association("Platform-Audits")]
+        public XPCollection<PlatformAuditTrail> PlatformAudits
+        {
+            get { return GetCollection<PlatformAuditTrail>(nameof(PlatformAudits)); }
+        }
+
         /// <summary>
         /// Склад, к которому относится площадка
         /// </summary>
