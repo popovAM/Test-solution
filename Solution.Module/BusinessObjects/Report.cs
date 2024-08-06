@@ -3,7 +3,6 @@ using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
-using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
 using System;
@@ -14,74 +13,85 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
-    [DefaultClassOptions]
-    public class Report : BaseObject
-    { 
+    [DomainComponent]
+    [NonPersistent]
+    public class Report : IXafEntityObject, IObjectSpaceLink, INotifyPropertyChanged
+    {
         #region Fields
+        private IObjectSpace objectSpace;
         private DateTime _beginDateTime;
         private DateTime _endDateTime;
-        private DateTime _creationDateTime;
-        private string _user;
         #endregion
 
-        #region Constructor
-        public Report(Session session)
-            : base(session)
-        {
-        }
-        #endregion
 
-        #region Events
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();
-
-            _creationDateTime = DateTime.Now;
-
-            // Заполняем поле User названием пользователя
-            _user = SecuritySystem.CurrentUserName;
-        }
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Дата и время начала 
-        /// </summary>
         public DateTime BeginDateTime
         {
             get { return _beginDateTime; }
-            set { SetPropertyValue(nameof(BeginDateTime), ref _beginDateTime, value); }
+            set
+            {
+                if (_beginDateTime != value)
+                {
+                    _beginDateTime = value;
+                    OnPropertyChanged(nameof(BeginDateTime));
+                }
+            }
         }
-        
-        /// <summary>
-        /// Дата и время конца
-        /// </summary>
+
         public DateTime EndDateTime
         {
             get { return _endDateTime; }
-            set { SetPropertyValue(nameof(EndDateTime), ref _endDateTime, value); }
+            set
+            {
+                if (_endDateTime != value)
+                {
+                    _endDateTime = value;
+                    OnPropertyChanged(nameof(EndDateTime));
+                }
+            }
         }
 
-        /// <summary>
-        /// Дата создания отчета
-        /// </summary>
-        [Browsable(false)]
-        public DateTime CreationDateTime
+        #region OnPropertyChanged
+        private void OnPropertyChanged(String propertyName)
         {
-            get { return _creationDateTime; }
-            set { SetPropertyValue(nameof(CreationDateTime), ref _creationDateTime, value); }
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
+        #endregion
 
-        /// <summary>
-        /// Пользователь, создавший отчет
-        /// </summary>
-        [Browsable(false)]
-        public string User 
-        {   
-            get { return _user;}
-            set { SetPropertyValue(nameof(User), ref _user, value); } 
+        #region Constructor
+        public Report()
+        {
         }
+        #endregion
+
+        #region IXafEntityObject members
+        void IXafEntityObject.OnCreated()
+        {
+            //this.BeginDateTime = objectSpace.CreateObject<Report>();
+        }
+        void IXafEntityObject.OnLoaded()
+        {
+            // Place the code that is executed each time the entity is loaded here.
+        }
+        void IXafEntityObject.OnSaving()
+        {
+            // Place the code that is executed each time the entity is saved here.
+        }
+        #endregion
+
+        #region IObjectSpaceLink members (see https://documentation.devexpress.com/eXpressAppFramework/clsDevExpressExpressAppIObjectSpaceLinktopic.aspx)
+        // Use the Object Space to access other entities from IXafEntityObject methods (see https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113707.aspx).
+        IObjectSpace IObjectSpaceLink.ObjectSpace
+        {
+            get { return objectSpace; }
+            set { objectSpace = value; }
+        }
+        #endregion
+
+        #region INotifyPropertyChanged members (see http://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged(v=vs.110).aspx)
+        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
     }
 }

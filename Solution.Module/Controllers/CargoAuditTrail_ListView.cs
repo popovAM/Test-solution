@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Actions;
+using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Layout;
 using DevExpress.ExpressApp.Model.NodeGenerators;
@@ -43,10 +44,20 @@ namespace Solution.Module.Controllers
         #region Форма заполения параметров отчета
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
-            //Создаём диалоговое окно
-            var context = Application.CreateObjectSpace(typeof(Report));
-            Report newReport = new Report(((XPObjectSpace)context).Session);
-            var view = Application.CreateDetailView(context, newReport);
+            // Получение TypesInfo из текущего приложения
+            ITypesInfo typesInfo = Application.TypesInfo;
+
+            // Создайте NonPersistentObjectSpaceProvider
+            var nonPersistentObjectSpaceProvider = new NonPersistentObjectSpaceProvider(typesInfo, null);
+
+            // Object Space для работы с неперсистентными объектами
+            var nonPersistentObjectSpace = nonPersistentObjectSpaceProvider.CreateObjectSpace();
+
+            // Экземпляр класса Report
+            Report newReport = nonPersistentObjectSpace.CreateObject<Report>();
+
+            // DetailView для отображения объекта
+            var view = Application.CreateDetailView(nonPersistentObjectSpace, newReport);
 
             //Задаём поведение диалогового окна
             var addController = Application.CreateController<DialogController>();
@@ -109,7 +120,8 @@ namespace Solution.Module.Controllers
                 {
                     var ws = p.Workbook.Worksheets.Add("List");
                     int Row = 1, Col = 1;
-
+                    ws.Cells[Row, 10].Value = newReport.EndDateTime.ToString("G");
+                    ws.Cells[Row, 11].Value = newReport.BeginDateTime.ToString("G");
                     foreach (var cargoAuditTrail in cargoAuditTrails)
                     {
 
