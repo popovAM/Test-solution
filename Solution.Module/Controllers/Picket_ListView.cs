@@ -91,14 +91,13 @@ namespace Solution.Module.Controllers
                 Picket newPicket = new Picket(((XPObjectSpace)ObjectSpace).Session);
 
                 // Делаем выборку по пикетам, находим последний созданный
-                var lastPicket = thisStorage.Pickets
+                var lastPicket = thisStorage.Pickets.Where(p => p.IsActive == true)
                 .OrderByDescending(p => p.Number)
                 .FirstOrDefault();
                 newPicket.Storage = thisStorage;
 
                 // Задаем номер пикета, исходя из запроса
                 newPicket.Number = lastPicket != null ? lastPicket.Number + 1 : 1;
-                newPicket.IsActive = true;
 
                 //Сохранение изменений
                 ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Pickets)));
@@ -119,7 +118,7 @@ namespace Solution.Module.Controllers
             if (thisStorage != null)
             {
                 //Выборка последнего пикета по дате создания
-                var lastPicket = thisStorage.Pickets
+                var lastPicket = thisStorage.Pickets.Where(p => p.IsActive == true)
                     .OrderByDescending(p => p.Number)
                     .FirstOrDefault();
 

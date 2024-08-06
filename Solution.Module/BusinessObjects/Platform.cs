@@ -20,7 +20,7 @@ namespace Solution.Module.BusinessObjects
     /// Площадка
     /// </summary>
     [DefaultClassOptions]
-    public class Platform : BaseObject
+    public class Platform : Verification
     {
         public Platform(Session session)
             : base(session)
@@ -54,7 +54,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Список пикетов
         /// </summary>
-        [Association("Platform-Pickets")]
+        [Association("Platforms-Pickets")]
         [VisibleInListView(false)]
         public XPCollection<Picket> Pickets
         {
