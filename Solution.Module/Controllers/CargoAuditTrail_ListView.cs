@@ -133,10 +133,8 @@ namespace Solution.Module.Controllers
                     foreach (var cargoAuditTrail in cargoAuditTrails)
                     {
 
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Picket;
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Cargo;
+                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
                         ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationType;
                         ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime;
 
                         Row++;

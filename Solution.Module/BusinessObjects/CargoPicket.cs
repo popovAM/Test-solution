@@ -110,6 +110,12 @@ namespace Solution.Module.BusinessObjects
             get { return _status; }
             set { SetPropertyValue(nameof(Status), ref _status, value); }
         }
+
+        [Association("CargoPicket - CargoPicketAudits")]
+        public XPCollection<CargoAuditTrail> CargoAuditTrails
+        {
+            get { return GetCollection<CargoAuditTrail>(nameof(CargoAuditTrails)); }
+        }
         #endregion
 
         #region Enums

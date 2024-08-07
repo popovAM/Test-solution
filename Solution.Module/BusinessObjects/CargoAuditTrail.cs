@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using static Solution.Module.BusinessObjects.CargoPicket;
 
 namespace Solution.Module.BusinessObjects
 {
@@ -36,48 +37,38 @@ namespace Solution.Module.BusinessObjects
         #endregion
 
         #region Fields
-        private decimal _weight;
-        private string _picket;
-        private string _cargo;
         private DateTime _operationDateTime;
-        private CargoStatus _operationType;
+        private CargoPicket _cargoPicket;
         #endregion
 
         #region Properties
         /// <summary>
         /// Вес на определенный момент времени
         /// </summary>
-        [Index(3)]
         public decimal Weight
         {
-            get { return _weight; }
-            set { SetPropertyValue(nameof(Weight), ref _weight, value); }
+            get { return CargoPicket.Picket.Platform.Weight; }
         }
 
         /// <summary>
         /// Площадка
         /// summary>
-        [Index(1)]
-        public string Picket
+        public string Platform
         {
-            get { return _picket; }
-            set { SetPropertyValue(nameof(Picket), ref _picket, value); }
+            get { return CargoPicket.Picket.Platform.Name; }            
         }
 
         /// <summary>
-        /// Тип груза
+        /// Склад
         /// </summary>
-        [Index(2)]
-        public string Cargo
+        public int Storage
         {
-            get { return _cargo; }
-            set { SetPropertyValue(nameof(Cargo), ref _cargo, value); }
+            get { return CargoPicket.Picket.Storage.Name; }
         }
 
         /// <summary>
         /// Время операции
         /// </summary>
-        [Index(4)]
         [ModelDefault("AllowEdit", "False")]
         [ModelDefault("DisplayFormat", "{0:dd.MM.yyyy HH:mm:ss}")]
         [ModelDefault("EditFormat", "dd.MM.yyyy HH:mm:ss")]
@@ -88,23 +79,11 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(OperationDateTime), ref _operationDateTime, value); }
         }
 
-        /// <summary>
-        /// Статус груза
-        /// </summary>
-        [Index(5)]
-        public CargoStatus OperationType
+        [Association("CargoPicket - CargoPicketAudits")]
+        public CargoPicket CargoPicket
         {
-            get { return _operationType; }
-            set { SetPropertyValue(nameof(OperationType), ref _operationType, value); }
-        }
-        #endregion
-
-        #region Enum
-        [Flags]
-        public enum CargoStatus
-        {
-            Загрузка = 0b_0000_0000,
-            Выгрузка = 0b_0000_0001
+            get { return _cargoPicket; }
+            set { SetPropertyValue(nameof(CargoPicket), ref _cargoPicket, value); }
         }
         #endregion
     }
