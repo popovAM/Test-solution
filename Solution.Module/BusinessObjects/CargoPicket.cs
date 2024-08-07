@@ -24,7 +24,7 @@ namespace Solution.Module.BusinessObjects
         #region Constructor
         public CargoPicket(Session session)
             : base(session)
-        {
+        { 
         }
         #endregion
 
@@ -60,6 +60,26 @@ namespace Solution.Module.BusinessObjects
         {
             get { return _weight; }
             set { SetPropertyValue(nameof(Weight), ref _weight, value); }
+        }
+
+        /// <summary>
+        /// Контрольная сумма
+        /// </summary>
+        public decimal SumWeight
+        {
+            get
+            {
+                decimal _sumWeight = 0;
+                var collectionSource = Session.Query<CargoPicket>().Where(c => c.Picket == Picket && c.Cargo == Cargo);
+                foreach (var item in collectionSource)
+                {
+                    if (item.Status == OperationType.Inflow)
+                        _sumWeight += item.Weight;
+                    else
+                        _sumWeight -= item.Weight;
+                }
+                return _sumWeight;
+            }
         }
 
         /// <summary>
