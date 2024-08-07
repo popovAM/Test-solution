@@ -13,6 +13,7 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Solution.Module.BusinessObjects;
 using System;
 using System.Collections.Generic;
@@ -128,8 +129,34 @@ namespace Solution.Module.Controllers
 
                     int Row = 1, Col = 1;
 
-                    ws.Cells[Row, 10].Value = newReport.EndDateTime.ToString("G");
-                    ws.Cells[Row, 11].Value = newReport.BeginDateTime.ToString("G");
+                    ws.Cells[1, 1, 5, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    ws.Cells[1, 1, 1, 2].Merge = true;
+
+                    ws.Columns[1].Width = 22.44;
+                    ws.Columns[2].Width = 17.11;
+
+                    ws.Cells[1, 1, 5, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                    ws.Cells[1, 1].Value = "Наличие груза на площадке";
+
+                    ws.Cells[2, 1].Value = "С:";
+                    ws.Cells[2, 2].Value = newReport.BeginDateTime.ToString("G");
+
+                    ws.Cells[3, 1].Value = "По:";
+                    ws.Cells[3, 2].Value = newReport.EndDateTime.ToString("G");
+
+                    ws.Cells[4, 1].Value = "Кем сформирован отчет:";
+                    ws.Cells[4, 2].Value = SecuritySystem.CurrentUserName;
+
+                    ws.Cells[5, 1].Value = "Дата создания:";
+                    ws.Cells[5, 2].Value = DateTime.Now.ToString("G");
+
+                    Row = 6;
+                    Col = 1;
+
                     foreach (var cargoAuditTrail in cargoAuditTrails)
                     {
 
