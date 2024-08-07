@@ -62,6 +62,9 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(Weight), ref _weight, value); }
         }
 
+        /// <summary>
+        /// Контрольная сумма
+        /// </summary>
         public decimal SumWeight
         {
             get
@@ -70,7 +73,10 @@ namespace Solution.Module.BusinessObjects
                 var collectionSource = Session.Query<CargoPicket>().Where(c => c.Picket == Picket && c.Cargo == Cargo);
                 foreach (var item in collectionSource)
                 {
-                    _sumWeight += item.Weight;
+                    if (item.Status == OperationType.Inflow)
+                        _sumWeight += item.Weight;
+                    else
+                        _sumWeight -= item.Weight;
                 }
                 return _sumWeight;
             }
