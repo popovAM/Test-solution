@@ -24,6 +24,8 @@ namespace Solution.Module.Controllers
     /// </summary>
     public partial class CargoPicket_ListView : ViewController
     {
+        #region Constructor
+
         public CargoPicket_ListView()
         {
             InitializeComponent();
@@ -46,6 +48,12 @@ namespace Solution.Module.Controllers
             OutflowCargo.Execute += OutflowCargo_Execute;
         }
 
+        #endregion
+
+        #region Methods
+
+        #region OnActivated
+
         protected override void OnActivated()
         {
             base.OnActivated();
@@ -57,6 +65,10 @@ namespace Solution.Module.Controllers
                 targetController.ProcessCurrentObjectAction.Enabled["Нельзя"] = false;
             }
         }
+
+        #endregion
+
+        #region InflowCargo_Execute
 
         /// <summary>
         /// Загрузка на пикет
@@ -88,6 +100,9 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Add(addController);
         }
 
+        #endregion
+
+        #region OutflowCargo_Execute
         /// <summary>
         /// Выгрузка пикета
         /// </summary>
@@ -118,6 +133,9 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Add(addController);
         }
 
+        #endregion
+
+        #endregion
 
     }
 }

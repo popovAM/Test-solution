@@ -22,14 +22,19 @@ namespace Solution.Module.BusinessObjects
     [DefaultClassOptions]
     public class Platform : Verification
     {
+        #region Constructor
         public Platform(Session session)
             : base(session)
         {
         }
+        #endregion
 
+        #region Fields
         private string _name;
         private Storage _storage;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Название площадки
         /// </summary>
@@ -84,5 +89,6 @@ namespace Solution.Module.BusinessObjects
                 return Pickets.Sum(p => p.CargoPickets.Sum(c => c.Weight));
             }
         }
+        #endregion
     }
 }

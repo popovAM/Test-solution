@@ -18,14 +18,19 @@ namespace Solution.Module.BusinessObjects
     [DefaultClassOptions]
     [ListViewFilter("Only Active", "[IsActive] = true")]
     public class Verification : BaseObject
-    { 
+    {
+        #region Constructor
         public Verification(Session session)
             : base(session)
         {
         }
+        #endregion
 
+        #region Fields
         private bool _isActive = true;
+        #endregion
 
+        #region Propeties
         /// <summary>
         /// Проверка на то, является ли объект активным
         /// </summary>
@@ -36,5 +41,6 @@ namespace Solution.Module.BusinessObjects
             get { return _isActive; }
             set { SetPropertyValue(nameof(IsActive), ref _isActive, value); }
         }
+        #endregion
     }
 }

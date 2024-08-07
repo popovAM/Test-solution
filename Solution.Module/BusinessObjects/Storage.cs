@@ -20,14 +20,19 @@ namespace Solution.Module.BusinessObjects
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
     public class Storage : Verification
-    { 
+    {
+        #region Constructor
         public Storage(Session session)
             : base(session)
         {
         }
-        
-        private int _name;
+        #endregion
 
+        #region Fields
+        private int _name;
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Название склада
         /// </summary>
@@ -55,5 +60,6 @@ namespace Solution.Module.BusinessObjects
         {
             get { return GetCollection<Platform>(nameof(Platforms)); }
         }
+        #endregion
     }
 }

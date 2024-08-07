@@ -21,6 +21,8 @@ namespace Solution.Module.Controllers
 {
     public partial class Storage_ListView : ViewController
     {
+        #region Constructor
+
         public Storage_ListView()
         {
             InitializeComponent();
@@ -31,22 +33,26 @@ namespace Solution.Module.Controllers
                 Caption = "Создать склад",
                 ImageName = "MenuBar_New"
             };
-            createStorage.Execute += createStorage_Execute;
+            createStorage.Execute += CreateStorage_Execute;
 
             SimpleAction deleteStorage = new SimpleAction(this, "deleteStorageAction", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Удалить склад",
                 ImageName = "MenuBar_Delete"
             };
-            deleteStorage.Execute += deleteStorage_Execute;
+            deleteStorage.Execute += DeleteStorage_Execute;
         }
+
+        #endregion
+
+        #region CreateStorage_Execute
 
         /// <summary>
         /// Создание склада
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void createStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
+        private void CreateStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             // Выборка склада по дате создания
             var lastStorage = ((XPObjectSpace)ObjectSpace).Session.Query<Storage>().Where(p => p.IsActive == true)
@@ -63,8 +69,12 @@ namespace Solution.Module.Controllers
             ObjectSpace.CommitChanges();
             ObjectSpace.Refresh();
         }
-        
-        private void deleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
+
+        #endregion
+
+        #region DeleteStorage_Execute
+
+        private void DeleteStorage_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             Storage selectedStorage = (Storage)((XPObjectSpace)ObjectSpace).GetObject(View.CurrentObject);
 
@@ -92,5 +102,8 @@ namespace Solution.Module.Controllers
             ObjectSpace.CommitChanges();
             ObjectSpace.Refresh();
         }
+
+        #endregion
+
     }
 }

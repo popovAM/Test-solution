@@ -21,17 +21,22 @@ namespace Solution.Module.BusinessObjects
 
     public class CargoPicket : Verification
     {
+        #region Constructor
         public CargoPicket(Session session)
             : base(session)
         { 
         }
+        #endregion
 
+        #region Fields
         private Cargo _cargo;
         private decimal _weight;
         private Picket _picket;
         private decimal _previousWeight;
         private OperationType _status;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Груз
         /// </summary>
@@ -99,12 +104,14 @@ namespace Solution.Module.BusinessObjects
             get { return _status; }
             set { SetPropertyValue(nameof(Status), ref _status, value); }
         }
+        #endregion
 
+        #region Enums
         public enum OperationType
         {
             Inflow,
             Outflow
         }
-
+        #endregion
     }
 }

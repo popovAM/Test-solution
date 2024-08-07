@@ -14,7 +14,15 @@ namespace Solution.Module.Controllers
 {
     public partial class Picket_ListView : ViewController
     {
+
+        #region Fields
+
         private Storage _storage;
+
+        #endregion
+
+        #region Constructor
+
         public Picket_ListView()
         {
             InitializeComponent();
@@ -37,6 +45,11 @@ namespace Solution.Module.Controllers
             deletePicket.Execute += DeletePicket_Execute;
         }
 
+        #endregion
+
+        #region Methods
+
+        #region UpdateMasterObject
         /// <summary>
         /// Обновление родительского объекта
         /// </summary>
@@ -45,6 +58,9 @@ namespace Solution.Module.Controllers
         {
             _storage = (Storage)masterObject;
         }
+        #endregion
+
+        #region OnMasterObjectChanged
 
         /// <summary>
         /// Обновление нашего объекта при изменении родительского объекта
@@ -52,6 +68,10 @@ namespace Solution.Module.Controllers
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMasterObjectChanged(object sender, EventArgs e) => UpdateMasterObject(((PropertyCollectionSource)sender).MasterObject);
+
+        #endregion
+
+        #region OnActivated
 
         protected override void OnActivated()
         {
@@ -65,7 +85,9 @@ namespace Solution.Module.Controllers
                 }
             }
         }
+        #endregion
 
+        #region OnDeactivated
         protected override void OnDeactivated()
         {
             if (((DevExpress.ExpressApp.ListView)View).CollectionSource is PropertyCollectionSource collectionSource)
@@ -74,6 +96,9 @@ namespace Solution.Module.Controllers
             }
             base.OnDeactivated();
         }
+        #endregion
+
+        #region CreatePicket_Execute
 
         /// <summary>
         /// Создание пикета
@@ -104,7 +129,9 @@ namespace Solution.Module.Controllers
                 ObjectSpace.CommitChanges();
             }
         }
+        #endregion
 
+        #region DeletePicket_Execute
         /// <summary>
         /// Удаление пикета
         /// </summary>
@@ -144,6 +171,10 @@ namespace Solution.Module.Controllers
                     }
                 }
             }
-        }
+        } 
+        #endregion
+
+        #endregion
+
     }
 }
