@@ -27,6 +27,7 @@ namespace Solution.Module.Controllers
     {
 
         #region Constructor
+
         public CargoAuditTrail_ListView()
         {
             InitializeComponent();
@@ -39,9 +40,11 @@ namespace Solution.Module.Controllers
 
             Report.Execute += Report_Execute;
         }
+
         #endregion
 
         #region Форма заполения параметров отчета
+
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             // Получение TypesInfo из текущего приложения
@@ -76,9 +79,11 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Clear();
             e.ShowViewParameters.Controllers.Add(addController);
         }
+
         #endregion
 
         #region Protected Methods
+
         protected override void OnActivated()
         {
             base.OnActivated();
@@ -97,6 +102,7 @@ namespace Solution.Module.Controllers
         #endregion
 
         #region Создание отчета
+
         private void AddReport(Report newReport)
         {
             DateTime now = DateTime.Now;
@@ -119,7 +125,9 @@ namespace Solution.Module.Controllers
                 using (var p = new ExcelPackage(source))
                 {
                     var ws = p.Workbook.Worksheets.Add("List");
+
                     int Row = 1, Col = 1;
+
                     ws.Cells[Row, 10].Value = newReport.EndDateTime.ToString("G");
                     ws.Cells[Row, 11].Value = newReport.BeginDateTime.ToString("G");
                     foreach (var cargoAuditTrail in cargoAuditTrails)
@@ -137,7 +145,9 @@ namespace Solution.Module.Controllers
                     p.Save();
                 }
             }
-            #endregion
         }
+
+        #endregion
+
     }
 }

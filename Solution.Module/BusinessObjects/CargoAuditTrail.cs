@@ -20,23 +20,30 @@ namespace Solution.Module.BusinessObjects
     [Appearance("ShowCreateDateTime", TargetItems = "CreateDateTime", Context = "ListView", Visibility = ViewItemVisibility.Show)]
     public class CargoAuditTrail : BaseObject
     {
+        #region Constructor
         public CargoAuditTrail(Session session)
             : base(session)
         {
         }
+        #endregion
 
+        #region AfterConstruction
         public override void AfterConstruction()
         {
             base.AfterConstruction();
             _operationDateTime = DateTime.Now;
         }
+        #endregion
 
+        #region Fields
         private decimal _weight;
         private string _picket;
         private string _cargo;
         private DateTime _operationDateTime;
         private CargoStatus _operationType;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Вес на определенный момент времени
         /// </summary>
@@ -90,11 +97,15 @@ namespace Solution.Module.BusinessObjects
             get { return _operationType; }
             set { SetPropertyValue(nameof(OperationType), ref _operationType, value); }
         }
+        #endregion
+
+        #region Enum
         [Flags]
         public enum CargoStatus
         {
             Загрузка = 0b_0000_0000,
             Выгрузка = 0b_0000_0001
         }
+        #endregion
     }
 }

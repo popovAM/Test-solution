@@ -22,14 +22,19 @@ namespace Solution.Module.BusinessObjects
     [Appearance("NotEnabledFields", TargetItems = "*", Context = "DetailView", Enabled = false, Criteria = "!IsNewObject(this)")]
     public class Cargo : BaseObject
     {
+        #region Constructor
         public Cargo(Session session)
             : base(session)
         {
         }
+        #endregion
 
+        #region Fields
         private Type _cargoType;
         private string _name;
-        
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Название груза
         /// </summary>
@@ -50,7 +55,9 @@ namespace Solution.Module.BusinessObjects
             get { return _cargoType; }
             set { SetPropertyValue(nameof(CargoType), ref _cargoType, value); }
         }
+        #endregion
 
+        #region Enums
         /// <summary>
         /// Набор типов грузов
         /// </summary>
@@ -61,5 +68,6 @@ namespace Solution.Module.BusinessObjects
             Bulk,
             Liquid
         }
+        #endregion
     }
 }

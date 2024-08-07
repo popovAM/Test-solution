@@ -26,10 +26,16 @@ namespace Solution.Module.Controllers
     /// </summary>
     public partial class Platform_ListView : ViewController
     {
+        #region Fields
+
         /// <summary>
         /// Родительский объект Склад
         /// </summary>
-        private Storage _storage;
+        private Storage _storage; 
+
+        #endregion
+
+        #region Constructor
 
         public Platform_ListView()
         {
@@ -51,6 +57,12 @@ namespace Solution.Module.Controllers
             };
             deletePlatform.Execute += DeletePlatform_Execute;
         }
+
+        #endregion
+
+        #region Methods
+
+        #region CreatePlatform_Execute
 
         /// <summary>
         /// Создание площадки
@@ -83,6 +95,10 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Add(addController);
         }
 
+        #endregion
+
+        #region DeletePlatform_Execute
+
         /// <summary>
         /// Удаление платформы
         /// </summary>
@@ -102,7 +118,7 @@ namespace Solution.Module.Controllers
                 if (message == DialogResult.Yes)
                 {
                     //Удаление связи площадки со всеми пикетами
-                    foreach(var item in currentObject.Pickets)
+                    foreach (var item in currentObject.Pickets)
                     {
                         item.NotActivePlatforms.Add(currentObject);
                         item.Platform = null;
@@ -123,6 +139,10 @@ namespace Solution.Module.Controllers
             else if (currentObject.Weight != 0)
                 throw new UserFriendlyException("На платформе находится груз.");
         }
+
+        #endregion
+
+        #region AddPicket
 
         /// <summary>
         /// Добавление пикета на площадку
@@ -158,9 +178,9 @@ namespace Solution.Module.Controllers
                 newPlatform.Name = selectedPickets[0].Number.ToString() + "-" + selectedPickets[selectedPickets.Count - 1].Number.ToString();
 
                 newPlatform.PlatformAudits.Add(new PlatformAuditTrail(((XPObjectSpace)ObjectSpace).Session)
-                { 
-                    TimeOperation = DateTime.Now, 
-                    Status = PlatformAuditTrail.PlatformStatus.Created 
+                {
+                    TimeOperation = DateTime.Now,
+                    Status = PlatformAuditTrail.PlatformStatus.Created
                 });
                 //Сохраняем изменения
                 ObjectSpace.CommitChanges();
@@ -172,6 +192,10 @@ namespace Solution.Module.Controllers
             }
         }
 
+        #endregion
+
+        #region UpdateMasterObject
+
         /// <summary>
         /// Обновление родительского объекта
         /// </summary>
@@ -181,12 +205,21 @@ namespace Solution.Module.Controllers
             _storage = (Storage)masterObject;
         }
 
+        #endregion
+
+        #region OnMasterObjectChanged
+
         /// <summary>
         /// Обновление нашего объекта при изменении мастер-объекта
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMasterObjectChanged(object sender, EventArgs e) => UpdateMasterObject(((PropertyCollectionSource)sender).MasterObject);
+
+        #endregion
+
+        #region OnActivated
+
         protected override void OnActivated()
         {
             base.OnActivated();
@@ -208,6 +241,11 @@ namespace Solution.Module.Controllers
 
             }
         }
+
+        #endregion
+
+        #region OnDeactivated
+
         protected override void OnDeactivated()
         {
             if (((ListView)View).CollectionSource is PropertyCollectionSource collectionSource)
@@ -216,5 +254,8 @@ namespace Solution.Module.Controllers
             }
             base.OnDeactivated();
         }
+
+        #endregion
     }
+    #endregion
 }

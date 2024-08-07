@@ -20,16 +20,21 @@ namespace Solution.Module.BusinessObjects
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
     public class Picket : Verification
-    { 
+    {
+        #region Constructor
         public Picket(Session session)
             : base(session)
         {
         }
-        
+        #endregion
+
+        #region Fields
         private Storage _storage;
         private Platform _platform;
         private int _number;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Номер пикета, для формирования площадки
         /// </summary>
@@ -100,5 +105,6 @@ namespace Solution.Module.BusinessObjects
         {
             get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
         }
+        #endregion
     }
 }
