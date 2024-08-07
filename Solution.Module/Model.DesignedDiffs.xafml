@@ -13,6 +13,32 @@
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Platform" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Storage" Removed="True" />
   </CreatableItems>
+  <NavigationItems>
+    <Items>
+      <Item Id="Default" ChildItemsDisplayStyle="LargeIcons" Caption="Audit Trail">
+        <Items>
+          <Item Id="Cargo_ListView" ImageName="BO_List" ChildItemsDisplayStyle="LargeIcons" Removed="True" />
+          <Item Id="CargoAuditTrail_ListView" ImageName="BO_Report" />
+          <Item Id="CargoPicket_ListView" ImageName="BO_Product_Group" Removed="True" />
+          <Item Id="Picket_ListView" Visible="False" Removed="True" />
+          <Item Id="Platform_ListView" Visible="False" Removed="True" />
+          <Item Id="PlatformAuditTrail_ListView" ImageName="BO_Report" />
+          <Item Id="Storage_ListView" ImageName="BO_Product" Removed="True" />
+          <Item Id="Verification_ListView" Visible="False" Removed="True" />
+        </Items>
+      </Item>
+      <Item Id="Objects" Caption="Objects" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="Cargo_ListView" ViewId="Cargo_ListView" ObjectKey="" ImageName="BO_List" IsNewNode="True" />
+          <Item Id="CargoPicket_ListView" ViewId="CargoPicket_ListView" ObjectKey="" ImageName="BO_Product_Group" IsNewNode="True" />
+          <Item Id="Picket_ListView" ViewId="Picket_ListView" ObjectKey="" Visible="False" IsNewNode="True" />
+          <Item Id="Platform_ListView" ViewId="Platform_ListView" ObjectKey="" Visible="False" IsNewNode="True" />
+          <Item Id="Storage_ListView" ViewId="Storage_ListView" ObjectKey="" ImageName="BO_Product" IsNewNode="True" />
+          <Item Id="Verification_ListView" ViewId="Verification_ListView" ObjectKey="" Visible="False" IsNewNode="True" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
@@ -23,6 +49,7 @@
     <DetailView Id="Cargo_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="True" />
     <ListView Id="Cargo_ListView" AllowDelete="True" />
     <ListView Id="Cargo_LookupListView" AllowDelete="False" AllowNew="False" />
+    <ListView Id="CargoAuditTrail_ListView" AllowNew="False" />
     <DetailView Id="CargoPicket_DetailView" AllowNew="True" />
     <ListView Id="CargoPicket_ListView" AllowNew="False" />
     <ListView Id="CargoPicket_LookupListView" AllowNew="False" AllowDelete="False" />
@@ -77,6 +104,7 @@
     <DetailView Id="Platform_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="False" />
     <ListView Id="Platform_ListView" AllowNew="False" AllowDelete="False" />
     <ListView Id="Platform_LookupListView" AllowDelete="False" AllowNew="False" />
+    <ListView Id="PlatformAuditTrail_ListView" AllowNew="False" />
     <DetailView Id="Storage_DetailView" AllowDelete="False" AllowNew="False" AllowEdit="False" />
     <ListView Id="Storage_ListView" AllowNew="False" AllowDelete="False" />
     <ListView Id="Storage_LookupListView" AllowNew="False" AllowDelete="False" />
@@ -87,5 +115,7 @@
       </Columns>
     </ListView>
     <ListView Id="Storage_Platforms_ListView" AllowDelete="False" AllowNew="False" />
+    <DetailView Id="Verification_DetailView" AllowEdit="False" AllowDelete="False" AllowNew="False" />
+    <ListView Id="Verification_ListView" AllowNew="False" />
   </Views>
 </Application>
