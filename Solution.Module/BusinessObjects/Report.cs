@@ -23,7 +23,7 @@ namespace Solution.Module.BusinessObjects
         private DateTime _endDateTime;
         #endregion
 
-
+        #region Properties
         public DateTime BeginDateTime
         {
             get { return _beginDateTime; }
@@ -49,6 +49,7 @@ namespace Solution.Module.BusinessObjects
                 }
             }
         }
+        #endregion
 
         #region OnPropertyChanged
         private void OnPropertyChanged(String propertyName)

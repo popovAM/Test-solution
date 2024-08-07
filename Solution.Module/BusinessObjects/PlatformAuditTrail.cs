@@ -16,21 +16,28 @@ namespace Solution.Module.BusinessObjects
 {
     [DefaultClassOptions]
     public class PlatformAuditTrail : BaseObject
-    { 
+    {
+        #region Constructor
         public PlatformAuditTrail(Session session)
             : base(session)
         {
         }
+        #endregion
+
+        #region AfterConstruction
         public override void AfterConstruction()
         {
             base.AfterConstruction();
         }
+        #endregion
 
+        #region Fields
         private DateTime _timeOperation;
         private PlatformStatus _status;
         private Platform _platform;
+        #endregion
 
-
+        #region Properties
         /// <summary>
         /// Платформа (головной объект)
         /// </summary>
@@ -75,8 +82,10 @@ namespace Solution.Module.BusinessObjects
         {
             get { return _status; }
             set { SetPropertyValue(nameof(PlatformStatus), ref _status, value); }
-        } 
+        }
+        #endregion
 
+        #region Enum
         /// <summary>
         /// Статус платформы
         /// </summary>
@@ -86,5 +95,6 @@ namespace Solution.Module.BusinessObjects
             Created = 0b_0000_0000,
             Deleted = 0b_0000_0001
         }
+        #endregion
     }
 }
