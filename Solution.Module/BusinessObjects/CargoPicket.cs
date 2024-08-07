@@ -23,7 +23,7 @@ namespace Solution.Module.BusinessObjects
     {
         public CargoPicket(Session session)
             : base(session)
-        {
+        { 
         }
 
         private Cargo _cargo;
@@ -55,6 +55,20 @@ namespace Solution.Module.BusinessObjects
         {
             get { return _weight; }
             set { SetPropertyValue(nameof(Weight), ref _weight, value); }
+        }
+
+        public decimal SumWeight
+        {
+            get
+            {
+                decimal _sumWeight = 0;
+                var collectionSource = Session.Query<CargoPicket>().Where(c => c.Picket == Picket && c.Cargo == Cargo);
+                foreach (var item in collectionSource)
+                {
+                    _sumWeight += item.Weight;
+                }
+                return _sumWeight;
+            }
         }
 
         /// <summary>

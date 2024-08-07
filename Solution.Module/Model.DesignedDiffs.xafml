@@ -24,7 +24,11 @@
     <ListView Id="Cargo_ListView" AllowDelete="True" />
     <ListView Id="Cargo_LookupListView" AllowDelete="False" AllowNew="False" />
     <DetailView Id="CargoPicket_DetailView" AllowNew="True" />
-    <ListView Id="CargoPicket_ListView" AllowNew="False" />
+    <ListView Id="CargoPicket_ListView" AllowNew="False">
+      <Columns>
+        <ColumnInfo Id="Cargo" GroupIndex="-1" />
+      </Columns>
+    </ListView>
     <ListView Id="CargoPicket_LookupListView" AllowNew="False" AllowDelete="False" />
     <ListView Id="Picket_CargoPickets_ListView" AllowDelete="False" AllowNew="False" />
     <ListView Id="Picket_CargoPickets_ListView_Copy" ClassName="Solution.Module.BusinessObjects.CargoPicket" AllowDelete="False" AllowNew="False" IsFooterVisible="True" IsGroupPanelVisible="True" GroupSummary="" IsNewNode="True">
