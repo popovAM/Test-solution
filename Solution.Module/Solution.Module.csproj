@@ -139,6 +139,7 @@
     <Compile Include="BusinessObjects\PlatformAuditTrail.cs" />
     <Compile Include="BusinessObjects\PlatformAuditTrail_Report.cs" />
     <Compile Include="BusinessObjects\Report.cs" />
+    <Compile Include="BusinessObjects\CargoAuditTrailReport.cs" />
     <Compile Include="BusinessObjects\Storage.cs" />
     <Compile Include="BusinessObjects\Cargo.cs" />
     <Compile Include="BusinessObjects\Verification.cs" />
