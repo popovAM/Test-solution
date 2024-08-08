@@ -137,6 +137,7 @@
     <Compile Include="BusinessObjects\Picket.cs" />
     <Compile Include="BusinessObjects\Platform.cs" />
     <Compile Include="BusinessObjects\PlatformAuditTrail.cs" />
+    <Compile Include="BusinessObjects\PlatformAuditTrail_Report.cs" />
     <Compile Include="BusinessObjects\Report.cs" />
     <Compile Include="BusinessObjects\Storage.cs" />
     <Compile Include="BusinessObjects\Cargo.cs" />
