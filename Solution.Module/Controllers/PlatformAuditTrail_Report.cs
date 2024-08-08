@@ -39,20 +39,9 @@ namespace Solution.Module.Controllers
 
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
-            // Получение TypesInfo из текущего приложения
-            ITypesInfo typesInfo = Application.TypesInfo;
-
-            // Создайте NonPersistentObjectSpaceProvider
-            var nonPersistentObjectSpaceProvider = new NonPersistentObjectSpaceProvider(typesInfo, null);
-
-            // Object Space для работы с неперсистентными объектами
-            var nonPersistentObjectSpace = nonPersistentObjectSpaceProvider.CreateObjectSpace();
-
-            // Экземпляр класса Report
-            Report newReport = nonPersistentObjectSpace.CreateObject<Report>();
-
-            // DetailView для отображения объекта
-            var view = Application.CreateDetailView(nonPersistentObjectSpace, newReport);
+            var context = Application.CreateObjectSpace(typeof(PlatformAuditTrail_Report));
+            var newReport = new PlatformAudit_Report(((XPObjectSpace)context).Session);
+            var view = Application.CreateDetailView(context, newReport);
 
             //Задаём поведение диалогового окна
             var addController = Application.CreateController<DialogController>();
@@ -61,7 +50,7 @@ namespace Solution.Module.Controllers
             addController.SaveOnAccept = true;
             addController.AcceptAction.Execute += (s, args) =>
             {
-                AddReport(newReport);
+                AddReport(newReport, context);
             };
 
             //Задаём параметры диалогового окна
@@ -85,22 +74,20 @@ namespace Solution.Module.Controllers
             base.OnDeactivated();
         }
 
-        private void AddReport(Report newReport)
+        private void AddReport(PlatformAudit_Report newReport, IObjectSpace context)
         {
             DateTime now = DateTime.Now;
             
-            var session = ((XPObjectSpace)ObjectSpace).Session;
+            var session = ((XPObjectSpace)context).Session;
 
             var platformAuditTrailsCreated = session.Query<PlatformAuditTrail>()
-                .Where(p => p.TimeOperation <= newReport.SelectedDateTime
+                .Where(p => p.TimeOperation <= newReport.DateTime
                 && p.Status == PlatformAuditTrail.PlatformStatus.Created);
             var platformAuditTrailsDeleted = session.Query<PlatformAuditTrail>()
-                .Where(p => p.TimeOperation <= newReport.SelectedDateTime
+                .Where(p => p.TimeOperation <= newReport.DateTime
                 && p.Status == PlatformAuditTrail.PlatformStatus.Deleted);
 
-
-
-            var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted);
+            var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted).ToList();
 
             string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
             string relativePath = Path.Combine("Reports", fileName);
@@ -116,12 +103,12 @@ namespace Solution.Module.Controllers
 
                     int Row = 1, Col = 1;
 
-                    ws.Cells[Row, 10].Value = newReport.EndDateTime.ToString("G");
-                    ws.Cells[Row, 11].Value = newReport.BeginDateTime.ToString("G");
+                    ws.Cells[Row, 10].Value = newReport.DateTime.ToString("G");                    
                     foreach (var platformAuditTrail in platformAuditTrails)
                     {
                         ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
                         ws.Cells[Row, Col++].Value = platformAuditTrail.Storage;
+                        ws.Cells[Row, Col++].Value = platformAuditTrail.TimeOperation.ToString();
 
                         Row++;
                         Col = 1;
