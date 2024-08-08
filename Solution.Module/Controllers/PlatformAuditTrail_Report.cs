@@ -22,28 +22,20 @@ using System.Text;
 
 namespace Solution.Module.Controllers
 {
-    // For more typical usage scenarios, be sure to check out https://documentation.devexpress.com/eXpressAppFramework/clsDevExpressExpressAppViewControllertopic.aspx.
-    public partial class CargoAuditTrail_ListView : ViewController
+        public partial class PlatformAuditTrail_Report : ViewController
     {
-
-        #region Constructor
-
-        public CargoAuditTrail_ListView()
+        public PlatformAuditTrail_Report()
         {
             InitializeComponent();
-            //Кнопка создания отчета по карго аудиту
-            SimpleAction Report = new SimpleAction(this, "Create Report", PredefinedCategory.ObjectsCreation)
+            SimpleAction Report = new SimpleAction(this, "Create ProReport", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Создать отчет",
-                ImageName = "MenuBar_New"
+                ImageName = "Menubar_Report"
             };
 
             Report.Execute += Report_Execute;
+
         }
-
-        #endregion
-
-        #region Форма заполения параметров отчета
 
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
@@ -80,39 +72,35 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Add(addController);
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void OnActivated()
         {
             base.OnActivated();
-            // Perform various tasks depending on the target View.
         }
         protected override void OnViewControlsCreated()
         {
             base.OnViewControlsCreated();
-            // Access and customize the target View control.
         }
         protected override void OnDeactivated()
         {
-            // Unsubscribe from previously subscribed events and release other references and resources.
             base.OnDeactivated();
         }
-        #endregion
-
-        #region Создание отчета
 
         private void AddReport(Report newReport)
         {
             DateTime now = DateTime.Now;
-
+            
             var session = ((XPObjectSpace)ObjectSpace).Session;
 
-            var cargoAuditTrails = session.Query<CargoAuditTrail>()
-                .Where(p => p.OperationDateTime >= newReport.BeginDateTime
-                && p.OperationDateTime <= newReport.EndDateTime)
-                .ToList();
+            var platformAuditTrailsCreated = session.Query<PlatformAuditTrail>()
+                .Where(p => p.TimeOperation <= newReport.SelectedDateTime
+                && p.Status == PlatformAuditTrail.PlatformStatus.Created);
+            var platformAuditTrailsDeleted = session.Query<PlatformAuditTrail>()
+                .Where(p => p.TimeOperation <= newReport.SelectedDateTime
+                && p.Status == PlatformAuditTrail.PlatformStatus.Deleted);
+
+
+
+            var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted);
 
             string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
             string relativePath = Path.Combine("Reports", fileName);
@@ -130,12 +118,10 @@ namespace Solution.Module.Controllers
 
                     ws.Cells[Row, 10].Value = newReport.EndDateTime.ToString("G");
                     ws.Cells[Row, 11].Value = newReport.BeginDateTime.ToString("G");
-                    foreach (var cargoAuditTrail in cargoAuditTrails)
+                    foreach (var platformAuditTrail in platformAuditTrails)
                     {
-
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime;
+                        ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
+                        ws.Cells[Row, Col++].Value = platformAuditTrail.Storage;
 
                         Row++;
                         Col = 1;
@@ -143,9 +129,7 @@ namespace Solution.Module.Controllers
                     p.Save();
                 }
             }
+
         }
-
-        #endregion
-
     }
 }

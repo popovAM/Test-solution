@@ -21,6 +21,7 @@ namespace Solution.Module.BusinessObjects
         private IObjectSpace objectSpace;
         private DateTime _beginDateTime;
         private DateTime _endDateTime;
+        private DateTime _selectedDateTime;
         #endregion
 
         #region Properties
@@ -46,6 +47,19 @@ namespace Solution.Module.BusinessObjects
                 {
                     _endDateTime = value;
                     OnPropertyChanged(nameof(EndDateTime));
+                }
+            }
+        }
+
+        public DateTime SelectedDateTime
+        {
+            get { return _selectedDateTime; }
+            set
+            {
+                if (_selectedDateTime != value)
+                {
+                    _selectedDateTime = value;
+                    OnPropertyChanged(nameof(SelectedDateTime));
                 }
             }
         }

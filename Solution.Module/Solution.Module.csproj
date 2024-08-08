@@ -153,6 +153,12 @@
     <Compile Include="Controllers\CargoPicket_ListView.Designer.cs">
       <DependentUpon>CargoPicket_ListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\PlatformAuditTrail_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\PlatformAuditTrail_Report.Designer.cs">
+      <DependentUpon>PlatformAuditTrail_Report.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Platform_ListView.cs">
       <SubType>Component</SubType>
     </Compile>
