@@ -43,6 +43,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Платформа (головной объект)
         /// </summary>
+        [Index(1)]
         [Association("Platform-Audits")]
         public Platform Platform
         {
@@ -50,15 +51,10 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(Platform), ref _platform, value); }
         }
 
-        public string PlatformName
-        {
-            get { return _platform.Name; }
-        }
-
         /// <summary>
         /// Время операции
         /// </summary>
-        //[Index()]
+        [Index(3)]
         [ModelDefault("AllowEdit", "False")]
         [ModelDefault("DisplayFormat", "{0:dd.MM.yyyy HH:mm:ss}")]
         [ModelDefault("EditFormat", "dd.MM.yyyy HH:mm:ss")]
@@ -72,6 +68,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Склад
         /// </summary>
+        [Index(0)]
         public int Storage
         {
             get { return _platform.Storage.Name; }
@@ -80,6 +77,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Статус платформы
         /// </summary>
+        [Index(2)]
         public PlatformStatus Status
         {
             get { return _status; }

@@ -66,8 +66,11 @@ namespace Solution.Module.Controllers
             newStorage.Name = lastStorage != null ? lastStorage.Name + 1 : 1;
 
             //Сохранение изменений
-            ObjectSpace.CommitChanges();
-            ObjectSpace.Refresh();
+            if (ObjectSpace.IsModified)
+            {
+                ObjectSpace.CommitChanges();
+                ObjectSpace.Refresh();
+            }
         }
 
         #endregion
@@ -99,8 +102,11 @@ namespace Solution.Module.Controllers
             }
 
             //Сохранение изменений
-            ObjectSpace.CommitChanges();
-            ObjectSpace.Refresh();
+            if (ObjectSpace.IsModified)
+            {
+                ObjectSpace.CommitChanges();
+                ObjectSpace.Refresh();
+            }
         }
 
         #endregion

@@ -19,7 +19,6 @@ namespace Solution.Module.BusinessObjects
     public class CargoAuditTrailReport : BaseObject
     {
         #region Fields
-        private IObjectSpace objectSpace;
         private DateTime _beginDateTime;
         private DateTime _endDateTime;
         private Storage _storage;
