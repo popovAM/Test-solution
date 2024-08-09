@@ -29,7 +29,7 @@ namespace Solution.Module.Controllers
             InitializeComponent();
             SimpleAction Report = new SimpleAction(this, "Create ProReport", PredefinedCategory.ObjectsCreation)
             {
-                Caption = "Создать отчет",
+                Caption = "Создать супер-отчет",
                 ImageName = "Menubar_Report"
             };
 
