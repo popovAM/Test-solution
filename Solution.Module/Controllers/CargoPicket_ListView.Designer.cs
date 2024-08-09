@@ -32,7 +32,7 @@ namespace Solution.Module.Controllers
             // 
             // CargoPicket_ListView
             // 
-            this.TargetViewId = "CargoPicket_ListView";
+            this.TargetViewId = "Picket_CargoPickets_ListView";
 
         }
 

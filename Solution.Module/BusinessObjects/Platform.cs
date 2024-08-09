@@ -86,7 +86,7 @@ namespace Solution.Module.BusinessObjects
         {
             get
             {
-                return Pickets.Sum(p => p.CargoPickets.Sum(c => c.Weight));
+                return Pickets.Sum(p => p.CargoPickets.Where(c => c.IsActive == true).Sum(c => c.Weight));
             }
         }
         #endregion

@@ -55,7 +55,6 @@ namespace Solution.Module.BusinessObjects
         [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         [DetailViewLayout(LayoutColumnPosition.Left)]
         [RuleRequiredField("RuleRequiredField for CargoPicket.Weight", DefaultContexts.Save, "Weight cannot be empty.", SkipNullOrEmptyValues = false)]
-        [RuleValueComparison("", DefaultContexts.Save, ValueComparisonType.GreaterThanOrEqual, "0")]
         public decimal Weight
         {
             get { return _weight; }
@@ -65,12 +64,14 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Контрольная сумма
         /// </summary>
+        [ModelDefault("EditMask", "#,###,###,###,###.###")]
+        [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         public decimal SumWeight
         {
             get
             {
                 decimal _sumWeight = 0;
-                var collectionSource = Session.Query<CargoPicket>().Where(c => c.Picket == Picket && c.Cargo == Cargo);
+                var collectionSource = Session.Query<CargoPicket>().Where(c => c.Picket == Picket && c.Cargo == Cargo && c.IsActive == true);
                 foreach (var item in collectionSource)
                 {
                     if (item.Status == OperationType.Inflow)
@@ -98,6 +99,8 @@ namespace Solution.Module.BusinessObjects
         /// Свойство для хранения предыдущего веса
         /// </summary>
         [ModelDefault("AllowEdit", "False")]
+        [ModelDefault("EditMask", "#,###,###,###,###.###")]
+        [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###!}")]
         [VisibleInListView(false), VisibleInDetailView(false)]
         public decimal PreviousWeight
         {
@@ -112,6 +115,7 @@ namespace Solution.Module.BusinessObjects
         }
 
         [Association("CargoPicket - CargoPicketAudits")]
+        [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
         public XPCollection<CargoAuditTrail> CargoAuditTrails
         {
             get { return GetCollection<CargoAuditTrail>(nameof(CargoAuditTrails)); }
