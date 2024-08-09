@@ -115,18 +115,18 @@ namespace Solution.Module.Controllers
                     var ws = p.Workbook.Worksheets.Add("List");
 
                     int Row = 1, Col = 1;
-                    ws.Cells[1, 1, 5, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    ws.Cells[1, 1, 5, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                    ws.Cells[1, 1, 5, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                    ws.Cells[1, 1, 5, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[2, 1, 5, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[2, 1, 5, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[2, 1, 5, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[2, 1, 5, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
-                    ws.Cells[1, 1, 5, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    ws.Cells[2, 1, 5, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
                     ws.Cells[1, 1, 1, 2].Merge = true;
                     ws.Cells[1, 1, 100, 100].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                     ws.Columns[1].Width = 32;
                     ws.Columns[2].Width = 15;
-                    ws.Columns[2].Width = 18;
+                    ws.Columns[3].Width = 18;
 
                     ws.Cells[1, 1].Value = "Платформы на складе";
 
@@ -143,20 +143,38 @@ namespace Solution.Module.Controllers
                     ws.Cells[5, 1].Value = "Склад:";
                     ws.Cells[5, 2].Value = storage;
 
-                    ws.Cells[7, 1].Value = "Платформа";
-                    ws.Cells[7, 2].Value = "Дата операции";
-
                     Row = 8;
                     Col = 1;
-                
-                    foreach (var platformAuditTrail in audits)
-                    {
-                        ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
-                        ws.Cells[Row, Col++].Value = platformAuditTrail.Storage;
-                        ws.Cells[Row, Col++].Value = platformAuditTrail.TimeOperation.ToString();
 
-                        Row++;
-                        Col = 1;
+                    if (newReport.Storage == null)
+                    {
+                        ws.Cells[7, 1].Value = "Склад";
+                        ws.Cells[7, 2].Value = "Платформа";
+                        ws.Cells[7, 3].Value = "Дата операции";
+
+                        foreach (var platformAuditTrail in audits)
+                        {
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.Storage;
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.TimeOperation.ToString();
+
+                            Row++;
+                            Col = 1;
+                        }
+                    }
+
+                    else
+                    {
+                        ws.Cells[7, 1].Value = "Платформа";
+                        ws.Cells[7, 2].Value = "Дата операции";
+                        foreach (var platformAuditTrail in audits)
+                        { 
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.TimeOperation.ToString();
+
+                            Row++;
+                            Col = 1;
+                        }
                     }
                     p.Save();
                 }
