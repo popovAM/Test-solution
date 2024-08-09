@@ -58,32 +58,33 @@
     </ListView>
     <ListView Id="CargoPicket_LookupListView" AllowNew="False" AllowDelete="False" />
     <ListView Id="Picket_CargoPickets_ListView" AllowDelete="False" AllowNew="False" />
-    <ListView Id="Picket_CargoPickets_ListView_Copy" ClassName="Solution.Module.BusinessObjects.CargoPicket" AllowDelete="False" AllowNew="False" IsFooterVisible="True" IsGroupPanelVisible="True" GroupSummary="" IsNewNode="True">
+    <ListView Id="Picket_CargoPickets_ListView_Copy" ClassName="Solution.Module.BusinessObjects.CargoPicket" AllowDelete="False" AllowNew="False" IsNewNode="True">
       <Columns IsNewNode="True">
+        <ColumnInfo Id="IsActive" PropertyName="IsActive" Width="50" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="Oid" PropertyName="Oid" Width="70" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="Picket" PropertyName="Picket" Width="70" Index="-1" IsNewNode="True" />
         <ColumnInfo Id="PreviousWeight" PropertyName="PreviousWeight" Width="50" Index="-1" IsNewNode="True" />
-        <ColumnInfo Id="Cargo" PropertyName="Cargo" Width="70" Index="0" GroupIndex="0" SortOrder="Ascending" IsNewNode="True" />
-        <ColumnInfo Id="Weight" PropertyName="Weight" Width="50" Index="1" IsNewNode="True" />
-        <ColumnInfo Id="Status" PropertyName="Status" Width="70" Index="2" IsNewNode="True" />
-        <ColumnInfo Id="IsActive" PropertyName="IsActive" Width="50" Index="3" SortIndex="0" SortOrder="Ascending" IsNewNode="True" />
+        <ColumnInfo Id="Status" PropertyName="Status" Width="70" Index="-1" IsNewNode="True" />
+        <ColumnInfo Id="Weight" PropertyName="Weight" Width="50" Index="-1" IsNewNode="True" />
+        <ColumnInfo Id="Cargo" PropertyName="Cargo" Width="70" Index="0" GroupIndex="0" GroupInterval="None" IsNewNode="True" />
+        <ColumnInfo Id="SumWeight" PropertyName="SumWeight" Width="50" Index="1" IsNewNode="True" />
       </Columns>
-      <Filters IsNewNode="True">
+      <Filters CurrentFilterId="Only Active" IsNewNode="True">
         <Filter Id="Only Active" Criteria="[IsActive] = true" IsNewNode="True" />
       </Filters>
     </ListView>
     <DetailView Id="Picket_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="False">
       <Items>
-        <PropertyEditor Id="CargoPickets_Copy" PropertyName="CargoPickets" View="Picket_CargoPickets_ListView" IsNewNode="True" />
+        <PropertyEditor Id="CargoPickets_Copy" PropertyName="CargoPickets" View="Picket_CargoPickets_ListView_Copy" IsNewNode="True" />
       </Items>
       <Layout>
         <LayoutGroup Id="Main">
-          <TabbedGroup Id="@99cd9508-1c2f-4e8b-b6ad-7bdcf86ac13c" IsNewNode="True">
-            <LayoutGroup Id="@0185b865-38fb-4f41-89b7-caf901abd893" IsNewNode="True">
-              <LayoutItem Id="CargoPickets_Copy" ViewItem="CargoPickets_Copy" ShowCaption="" Index="0" IsNewNode="True" />
-            </LayoutGroup>
-            <LayoutGroup Id="@debd6923-3c9d-41e3-b223-49b4a5f4844e" IsNewNode="True">
+          <TabbedGroup Id="@99cd9508-1c2f-4e8b-b6ad-7bdcf86ac13c" Caption="SecondCargoPicket" IsNewNode="True">
+            <LayoutGroup Id="@debd6923-3c9d-41e3-b223-49b4a5f4844e" Index="0" IsNewNode="True">
               <LayoutItem Id="CargoPickets" ViewItem="CargoPickets" ShowCaption="" Index="0" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="@0185b865-38fb-4f41-89b7-caf901abd893" Index="1" IsNewNode="True">
+              <LayoutItem Id="CargoPickets_Copy" ViewItem="CargoPickets_Copy" ShowCaption="" Index="0" IsNewNode="True" />
             </LayoutGroup>
           </TabbedGroup>
           <LayoutGroup Id="CargoPickets_Group" Removed="True">
