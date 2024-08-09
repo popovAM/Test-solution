@@ -27,12 +27,21 @@ namespace Solution.Module.BusinessObjects
         }
 
         private DateTime _dateTime;
+        private Storage _storage;
 
-
+        [ModelDefault("EditFormat", "dd.MM.yyyy HH:mm:ss")]
+        [ModelDefault("EditMask", "dd.MM.yyyy HH:mm:ss")]
+        [ModelDefault("DisplayFormat", "{0: dd.MM.yyyy hh:mm:ss}")]
         public DateTime DateTime
         {
             get { return _dateTime; }
             set { SetPropertyValue(nameof(DateTime), ref _dateTime, value); }
+        }
+
+        public Storage Storage
+        {
+            get { return _storage; }
+            set { SetPropertyValue(nameof(Storage), ref _storage, value); }
         }
 
         #region OnPropertyChanged

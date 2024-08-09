@@ -13,6 +13,7 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Solution.Module.BusinessObjects;
 using System;
 using System.Collections.Generic;
@@ -80,14 +81,26 @@ namespace Solution.Module.Controllers
             
             var session = ((XPObjectSpace)context).Session;
 
-            var platformAuditTrailsCreated = session.Query<PlatformAuditTrail>()
-                .Where(p => p.TimeOperation <= newReport.DateTime
-                && p.Status == PlatformAuditTrail.PlatformStatus.Created);
-            var platformAuditTrailsDeleted = session.Query<PlatformAuditTrail>()
-                .Where(p => p.TimeOperation <= newReport.DateTime
-                && p.Status == PlatformAuditTrail.PlatformStatus.Deleted);
+            var platformAuditTrails = 
+                session.Query<PlatformAuditTrail>()
+                       .Where(p => p.TimeOperation <= newReport.DateTime
+                                               && p.Status == PlatformAuditTrail.PlatformStatus.Created)
+                       .Select(s => s.Platform)
+                       .Where(w => !w.PlatformAudits
+                                                .Any(a => a.Status == PlatformAuditTrail.PlatformStatus.Deleted))
+                       .ToList();
 
-            var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted).ToList();
+            var oids = platformAuditTrails.Select(s => s.Oid).ToList();
+            var audits = session.Query<PlatformAuditTrail>().Where(w => oids.Contains(w.Platform.Oid)).ToList();
+
+            //var platformAuditTrailsDeleted = session.Query<PlatformAuditTrail>()
+            //    .Where(p => p.TimeOperation <= newReport.DateTime
+            //    && p.Status == PlatformAuditTrail.PlatformStatus.Deleted);
+
+            //var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted).ToList();
+
+            audits = audits.Where(p => newReport.Storage == null || p.Platform.Storage.Name == newReport.Storage.Name).OrderBy(p => p.TimeOperation)
+                .ToList();
 
             string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
             string relativePath = Path.Combine("Reports", fileName);
@@ -102,9 +115,41 @@ namespace Solution.Module.Controllers
                     var ws = p.Workbook.Worksheets.Add("List");
 
                     int Row = 1, Col = 1;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[1, 1, 5, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
-                    ws.Cells[Row, 10].Value = newReport.DateTime.ToString("G");                    
-                    foreach (var platformAuditTrail in platformAuditTrails)
+                    ws.Cells[1, 1, 5, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+                    ws.Cells[1, 1, 1, 2].Merge = true;
+                    ws.Cells[1, 1, 100, 100].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    ws.Columns[1].Width = 32;
+                    ws.Columns[2].Width = 15;
+                    ws.Columns[2].Width = 18;
+
+                    ws.Cells[1, 1].Value = "Платформы на складе";
+
+                    ws.Cells[2, 1].Value = "Дата";
+                    ws.Cells[2, 2].Value = newReport.DateTime.ToString("g");
+
+                    ws.Cells[3, 1].Value = "Кем сформирован отчет:";
+                    ws.Cells[3, 2].Value = SecuritySystem.CurrentUserName;
+
+                    ws.Cells[4, 1].Value = "Дата и время формирования отчета:";
+                    ws.Cells[4, 2].Value = DateTime.Now.ToString("g");
+
+                    var storage = newReport.Storage == null ? "Все" : newReport.Storage.Name.ToString();
+                    ws.Cells[5, 1].Value = "Склад:";
+                    ws.Cells[5, 2].Value = storage;
+
+                    ws.Cells[7, 1].Value = "Платформа";
+                    ws.Cells[7, 2].Value = "Дата операции";
+
+                    Row = 8;
+                    Col = 1;
+                
+                    foreach (var platformAuditTrail in audits)
                     {
                         ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
                         ws.Cells[Row, Col++].Value = platformAuditTrail.Storage;

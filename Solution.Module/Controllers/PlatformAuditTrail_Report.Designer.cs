@@ -29,7 +29,11 @@ namespace Solution.Module.Controllers
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            // 
+            // PlatformAuditTrail_Report
+            // 
+            this.TargetViewId = "PlatformAuditTrail_ListView";
+
         }
 
         #endregion
