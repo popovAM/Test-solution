@@ -46,6 +46,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Вес на определенный момент времени
         /// </summary>
+        [Index(3)]
         [ModelDefault("EditMask", "#,###,###,###,###.###")]
         [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         public decimal Weight
@@ -57,6 +58,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Площадка
         /// summary>
+        [Index(1)]
         public string Platform
         {
             get { return CargoPicket.Picket.Platform.Name; }
@@ -65,6 +67,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Склад
         /// </summary>
+        [Index(0)]
         public int Storage
         {
             get { return CargoPicket.Picket.Storage.Name; }
@@ -73,6 +76,7 @@ namespace Solution.Module.BusinessObjects
         /// <summary>
         /// Время операции
         /// </summary>
+        [Index(2)]
         [ModelDefault("AllowEdit", "False")]
         [ModelDefault("DisplayFormat", "{0:dd.MM.yyyy HH:mm:ss}")]
         [ModelDefault("EditFormat", "dd.MM.yyyy HH:mm:ss")]
@@ -83,6 +87,9 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(OperationDateTime), ref _operationDateTime, value); }
         }
 
+        /// <summary>
+        /// Груз на пикете, по которому создаются записи
+        /// </summary>
         [Association("CargoPicket - CargoPicketAudits")]
         [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
         public CargoPicket CargoPicket

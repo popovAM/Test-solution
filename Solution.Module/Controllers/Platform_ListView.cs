@@ -99,9 +99,6 @@ namespace Solution.Module.Controllers
 
         #region DeletePlatform_Execute
 
-
-
-        //Переделать логику удаления платформы
         /// <summary>
         /// Удаление платформы
         /// </summary>

@@ -1,17 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application Title="Solution">
+  <ActionDesign>
+    <Actions>
+      <Action Id="Create ProReport" ImageName="BO_Report" />
+      <Action Id="Create Report" ImageName="BO_Report" />
+    </Actions>
+  </ActionDesign>
   <BOModel>
     <Class Name="Solution.Module.BusinessObjects.CargoPicket">
       <OwnMembers>
         <Member Name="Weight" EditMaskType="Simple" />
       </OwnMembers>
     </Class>
+    <Class Name="Solution.Module.BusinessObjects.PlatformAudit_Report" ImageName="BO_Report" />
   </BOModel>
   <CreatableItems>
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.CargoAuditTrail" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.CargoPicket" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Picket" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Platform" Removed="True" />
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.PlatformAudit_Report" Removed="True" />
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.PlatformAuditTrail" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Storage" Removed="True" />
+    <CreatableItem ClassName="Solution.Module.BusinessObjects.Verification" Removed="True" />
   </CreatableItems>
   <NavigationItems>
     <Items>
@@ -22,6 +33,7 @@
           <Item Id="CargoPicket_ListView" ImageName="BO_Product_Group" Removed="True" />
           <Item Id="Picket_ListView" Visible="False" Removed="True" />
           <Item Id="Platform_ListView" Visible="False" Removed="True" />
+          <Item Id="PlatformAudit_Report_ListView" Visible="False" />
           <Item Id="PlatformAuditTrail_ListView" ImageName="BO_Report" />
           <Item Id="Storage_ListView" ImageName="BO_Product" Removed="True" />
           <Item Id="Verification_ListView" Visible="False" Removed="True" />
@@ -30,7 +42,7 @@
       <Item Id="Objects" Caption="Objects" IsNewNode="True">
         <Items IsNewNode="True">
           <Item Id="Cargo_ListView" ViewId="Cargo_ListView" ObjectKey="" ImageName="BO_List" IsNewNode="True" />
-          <Item Id="CargoPicket_ListView" ViewId="CargoPicket_ListView" ObjectKey="" ImageName="BO_Product_Group" IsNewNode="True" />
+          <Item Id="CargoPicket_ListView" ViewId="CargoPicket_ListView" ObjectKey="" ImageName="BO_Product_Group" Visible="False" IsNewNode="True" />
           <Item Id="Picket_ListView" ViewId="Picket_ListView" ObjectKey="" Visible="False" IsNewNode="True" />
           <Item Id="Platform_ListView" ViewId="Platform_ListView" ObjectKey="" Visible="False" IsNewNode="True" />
           <Item Id="Storage_ListView" ViewId="Storage_ListView" ObjectKey="" ImageName="BO_Product" IsNewNode="True" />

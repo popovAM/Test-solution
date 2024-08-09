@@ -32,7 +32,6 @@ namespace Solution.Module.BusinessObjects
         private Cargo _cargo;
         private decimal _weight;
         private Picket _picket;
-        private decimal _previousWeight;
         private OperationType _status;
         #endregion
 
@@ -51,8 +50,8 @@ namespace Solution.Module.BusinessObjects
         /// Вес груза
         /// </summary>
         [Index(2)]
-        [ModelDefault("EditMask", "#,###,###,###,###.###")]
-        [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###;}")]
+        [ModelDefault("EditMask", "#,###,###,###,###.###;")]
+        [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         [DetailViewLayout(LayoutColumnPosition.Left)]
         [RuleRequiredField("RuleRequiredField for CargoPicket.Weight", DefaultContexts.Save, "Weight cannot be empty.", SkipNullOrEmptyValues = false)]
         public decimal Weight

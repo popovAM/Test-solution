@@ -201,7 +201,7 @@ namespace Solution.Module.Controllers
 
         #endregion
 
-        #region
+        #region IsPositiveWeight
 
         private bool IsPosiviteWeight(CargoPicket currentObject, IObjectSpace context)
         {
@@ -210,15 +210,17 @@ namespace Solution.Module.Controllers
 
             decimal sumWeight = 0;
             var collectionSource = ((XPObjectSpace)context).Session.Query<CargoPicket>().Where(
-                c => c.Picket == currentObject.Picket 
-                && c.Cargo == currentObject.Cargo 
+                c => c.Picket == currentObject.Picket
+                && c.Cargo == currentObject.Cargo
                 && c.IsActive == true);
-        
-            foreach (var item in collectionSource)
-            {
-                sumWeight += item.Weight;
-            }
 
+            if (collectionSource != null)
+            {
+                foreach (var item in collectionSource)
+                {
+                    sumWeight += item.Weight;
+                }
+            }
             sumWeight += currentObject.Weight;
 
             if (sumWeight < 0)
@@ -229,14 +231,14 @@ namespace Solution.Module.Controllers
 
             else if (sumWeight == 0)
             {
-                foreach (var item in collectionSource)
-                    item.IsActive = false;
+                if (collectionSource != null)
+                    foreach (var item in collectionSource)
+                        item.IsActive = false;
                 currentObject.IsActive = false;
             }
 
             return true;
         }
-
 
 
         #endregion
