@@ -137,6 +137,7 @@
     <Compile Include="BusinessObjects\Picket.cs" />
     <Compile Include="BusinessObjects\Platform.cs" />
     <Compile Include="BusinessObjects\PlatformAuditTrail.cs" />
+    <Compile Include="BusinessObjects\PlatformAudit_Report.cs" />
     <Compile Include="BusinessObjects\CargoAuditTrailReport.cs" />
     <Compile Include="BusinessObjects\Storage.cs" />
     <Compile Include="BusinessObjects\Cargo.cs" />
@@ -152,6 +153,12 @@
     </Compile>
     <Compile Include="Controllers\CargoPicket_ListView.Designer.cs">
       <DependentUpon>CargoPicket_ListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\PlatformAuditTrail_Report.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controllers\PlatformAuditTrail_Report.Designer.cs">
+      <DependentUpon>PlatformAuditTrail_Report.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\Platform_ListView.cs">
       <SubType>Component</SubType>
@@ -189,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\Picket_ListView.resx">
       <DependentUpon>Picket_ListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\PlatformAuditTrail_Report.resx">
+      <DependentUpon>PlatformAuditTrail_Report.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controllers\Platform_ListView.resx">
       <DependentUpon>Platform_ListView.cs</DependentUpon>

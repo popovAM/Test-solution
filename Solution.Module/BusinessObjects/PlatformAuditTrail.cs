@@ -29,6 +29,8 @@ namespace Solution.Module.BusinessObjects
         {
             base.AfterConstruction();
         }
+
+
         #endregion
 
         #region Fields
