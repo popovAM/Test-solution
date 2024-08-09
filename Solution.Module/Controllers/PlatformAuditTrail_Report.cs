@@ -30,8 +30,7 @@ namespace Solution.Module.Controllers
             InitializeComponent();
             SimpleAction Report = new SimpleAction(this, "Create ProReport", PredefinedCategory.ObjectsCreation)
             {
-                Caption = "Создать супер-отчет",
-                ImageName = "Menubar_Report"
+                Caption = "Создать отчет"
             };
 
             Report.Execute += Report_Execute;
@@ -150,13 +149,11 @@ namespace Solution.Module.Controllers
                     {
                         ws.Cells[7, 1].Value = "Склад";
                         ws.Cells[7, 2].Value = "Платформа";
-                        ws.Cells[7, 3].Value = "Дата операции";
 
                         foreach (var platformAuditTrail in audits)
                         {
                             ws.Cells[Row, Col++].Value = platformAuditTrail.Storage;
-                            ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
-                            ws.Cells[Row, Col++].Value = platformAuditTrail.TimeOperation.ToString();
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.Platform.Name;
 
                             Row++;
                             Col = 1;
@@ -166,11 +163,9 @@ namespace Solution.Module.Controllers
                     else
                     {
                         ws.Cells[7, 1].Value = "Платформа";
-                        ws.Cells[7, 2].Value = "Дата операции";
                         foreach (var platformAuditTrail in audits)
                         { 
-                            ws.Cells[Row, Col++].Value = platformAuditTrail.PlatformName;
-                            ws.Cells[Row, Col++].Value = platformAuditTrail.TimeOperation.ToString();
+                            ws.Cells[Row, Col++].Value = platformAuditTrail.Platform.Name;
 
                             Row++;
                             Col = 1;

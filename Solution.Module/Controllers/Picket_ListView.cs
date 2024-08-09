@@ -123,10 +123,13 @@ namespace Solution.Module.Controllers
 
                 // Задаем номер пикета, исходя из запроса
                 newPicket.Number = lastPicket != null ? lastPicket.Number + 1 : 1;
+            }
 
-                //Сохранение изменений
-                ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Pickets)));
+            //Сохранение изменений
+            if (ObjectSpace.IsModified)
+            {
                 ObjectSpace.CommitChanges();
+                ObjectSpace.Refresh();
             }
         }
         #endregion
@@ -156,8 +159,6 @@ namespace Solution.Module.Controllers
                     if (lastPicket.Platform == null)
                     {
                         lastPicket.IsActive = false;
-                        ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Pickets)));
-                        ObjectSpace.CommitChanges();
                     }
                     else
                     {
@@ -169,6 +170,13 @@ namespace Solution.Module.Controllers
                             MessageBoxIcon.Question
                         );
                     }
+                }
+
+                //Сохранение изменений
+                if (ObjectSpace.IsModified)
+                {
+                    ObjectSpace.CommitChanges();
+                    ObjectSpace.Refresh();
                 }
             }
         } 
