@@ -99,6 +99,9 @@ namespace Solution.Module.Controllers
 
         #region DeletePlatform_Execute
 
+
+
+        //Переделать логику удаления платформы
         /// <summary>
         /// Удаление платформы
         /// </summary>
@@ -131,13 +134,18 @@ namespace Solution.Module.Controllers
                         TimeOperation = DateTime.Now,
                         Status = PlatformAuditTrail.PlatformStatus.Deleted
                     });
-                    ObjectSpace.SetModified(View.CurrentObject, View.ObjectTypeInfo.FindMember(nameof(Storage.Platforms)));
-                    ObjectSpace.CommitChanges();
                 }
             }
             //Если на площадке присутствует груз 
             else if (currentObject.Weight != 0)
                 throw new UserFriendlyException("На платформе находится груз.");
+
+            //Сохранение изменений
+            if (ObjectSpace.IsModified)
+            {
+                ObjectSpace.CommitChanges();
+                ObjectSpace.Refresh();
+            }
         }
 
         #endregion
@@ -182,13 +190,18 @@ namespace Solution.Module.Controllers
                     TimeOperation = DateTime.Now,
                     Status = PlatformAuditTrail.PlatformStatus.Created
                 });
-                //Сохраняем изменения
-                ObjectSpace.CommitChanges();
             }
             //Если список неправильный
             else
             {
                 throw new UserFriendlyException("Площадка должна быть не занята и не разрывна");
+            }
+
+            //Сохранение изменений
+            if (ObjectSpace.IsModified)
+            {
+                ObjectSpace.CommitChanges();
+                ObjectSpace.Refresh();
             }
         }
 

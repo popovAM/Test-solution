@@ -137,23 +137,22 @@ namespace Solution.Module.Controllers
             var addController = Application.CreateController<DialogController>();
             addController.AcceptAction.Caption = "Сохранить";
             addController.CancelAction.Caption = "Отменить";
-            addController.SaveOnAccept = true;
+            addController.SaveOnAccept = false;
             addController.AcceptAction.Execute += (s, args) =>
             {
-                CargoAuditTrail newRecordAudit = new CargoAuditTrail(((XPObjectSpace)context).Session)
+                bool IsPositive = IsPosiviteWeight(newCargoPicketRecord, context);
+
+                if (context.IsModified && IsPositive)
                 {
-                    OperationDateTime = DateTime.Now
-                };
+                    newCargoPicketRecord.CargoAuditTrails.Add(new CargoAuditTrail(((XPObjectSpace)context).Session)
+                    {
+                        OperationDateTime = DateTime.Now,
+                        Weight = newCargoPicketRecord.Picket.Platform.Weight
+                    });
 
-                if (newCargoPicketRecord.Status == CargoPicket.OperationType.Inflow)
-                    newRecordAudit.Weight = newCargoPicketRecord.Picket.Platform.Weight;
-                else
-                    newRecordAudit.Weight = newCargoPicketRecord.Picket.Platform.Weight * (-1);
-
-                newCargoPicketRecord.CargoAuditTrails.Add(newRecordAudit);
-
-                context.CommitChanges();
-                context.Refresh();
+                    context.CommitChanges();
+                    context.Refresh();
+                }
             };
 
             //Задаём параметры диалогового окна
@@ -166,6 +165,13 @@ namespace Solution.Module.Controllers
 
         #endregion
 
+        #region ClearPicket_Execute
+
+        /// <summary>
+        /// Очищение пикета от всех грузов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearPicket_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             var message = XtraMessageBox.Show("Вы действительно хотите очистить пикет?", "Очищение пикета", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -173,7 +179,7 @@ namespace Solution.Module.Controllers
             if (message == DialogResult.Yes)
             {
                 var thisPicket = _picket;
-                var selectedCargoPickets = ((XPObjectSpace)ObjectSpace).Session.Query<CargoPicket>().Where(c => c.Picket == thisPicket);
+                var selectedCargoPickets = ((XPObjectSpace)ObjectSpace).Session.Query<CargoPicket>().Where(c => c.Picket == thisPicket && c.IsActive == true);
                 foreach (var item in selectedCargoPickets)
                 {
                     item.IsActive = false;
@@ -183,12 +189,60 @@ namespace Solution.Module.Controllers
                     OperationDateTime = DateTime.Now,
                     Weight = selectedCargoPickets.First().Picket.Platform.Weight
                 });
-                ObjectSpace.CommitChanges();
-                ObjectSpace.Refresh();
+
+                //Сохранение изменений
+                if (ObjectSpace.IsModified)
+                {
+                    ObjectSpace.CommitChanges();
+                    ObjectSpace.Refresh();
+                }
             }
         }
 
         #endregion
+
+        #region
+
+        private bool IsPosiviteWeight(CargoPicket currentObject, IObjectSpace context)
+        {
+            if (currentObject.Status == CargoPicket.OperationType.Outflow)
+                currentObject.Weight *= (-1);
+
+            decimal sumWeight = 0;
+            var collectionSource = ((XPObjectSpace)context).Session.Query<CargoPicket>().Where(
+                c => c.Picket == currentObject.Picket 
+                && c.Cargo == currentObject.Cargo 
+                && c.IsActive == true);
+        
+            foreach (var item in collectionSource)
+            {
+                sumWeight += item.Weight;
+            }
+
+            sumWeight += currentObject.Weight;
+
+            if (sumWeight < 0)
+            {
+                throw new UserFriendlyException("На площадке недостаточно груза.");
+                return false;
+            }
+
+            else if (sumWeight == 0)
+            {
+                foreach (var item in collectionSource)
+                    item.IsActive = false;
+                currentObject.IsActive = false;
+            }
+
+            return true;
+        }
+
+
+
+        #endregion
+
+        #endregion
+
 
     }
 }
