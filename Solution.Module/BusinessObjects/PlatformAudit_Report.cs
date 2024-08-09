@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
-    [DefaultClassOptions]
+    [NonPersistent]
     public class PlatformAudit_Report : BaseObject
     {
         public PlatformAudit_Report(Session session)
