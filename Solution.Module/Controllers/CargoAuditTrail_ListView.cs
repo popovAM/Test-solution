@@ -32,7 +32,7 @@ namespace Solution.Module.Controllers
         public CargoAuditTrail_ListView()
         {
             InitializeComponent();
-            //Кнопка изменения груза на пикете
+            //Кнопка создания отчета по карго аудиту
             SimpleAction Report = new SimpleAction(this, "Create Report", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Создать отчет",
