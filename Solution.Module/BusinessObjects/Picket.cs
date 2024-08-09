@@ -1,6 +1,8 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
@@ -19,6 +21,7 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
+    [Appearance("HideCargoPicketsWhilePlatformIsNull", TargetItems = "CargoPickets", Context = "DetailView", Visibility = ViewItemVisibility.Hide,Criteria = "[Platform] is null")]
     public class Picket : Verification
     {
         #region Constructor
@@ -93,7 +96,6 @@ namespace Solution.Module.BusinessObjects
         {
             get { return GetCollection<Platform>(nameof(NotActivePlatforms)); }
         }
-
 
         ///<summary>
         /// Журнал расхода груза на площадке

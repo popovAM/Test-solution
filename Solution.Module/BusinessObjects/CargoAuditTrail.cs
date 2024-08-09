@@ -39,15 +39,19 @@ namespace Solution.Module.BusinessObjects
         #region Fields
         private DateTime _operationDateTime;
         private CargoPicket _cargoPicket;
+        private decimal _weight;
         #endregion
 
         #region Properties
         /// <summary>
         /// Вес на определенный момент времени
         /// </summary>
+        [ModelDefault("EditMask", "#,###,###,###,###.###")]
+        [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
         public decimal Weight
         {
-            get { return CargoPicket.Picket.Platform.Weight; }
+            get { return _weight; }
+            set { SetPropertyValue(nameof(Weight), ref _weight, value); }
         }
 
         /// <summary>
@@ -55,7 +59,7 @@ namespace Solution.Module.BusinessObjects
         /// summary>
         public string Platform
         {
-            get { return CargoPicket.Picket.Platform.Name; }            
+            get { return CargoPicket.Picket.Platform.Name; }
         }
 
         /// <summary>
@@ -80,6 +84,7 @@ namespace Solution.Module.BusinessObjects
         }
 
         [Association("CargoPicket - CargoPicketAudits")]
+        [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
         public CargoPicket CargoPicket
         {
             get { return _cargoPicket; }

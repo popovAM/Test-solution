@@ -11,11 +11,13 @@ using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
+using DevExpress.XtraEditors;
 using Solution.Module.BusinessObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Solution.Module.Controllers
 {
@@ -24,6 +26,12 @@ namespace Solution.Module.Controllers
     /// </summary>
     public partial class CargoPicket_ListView : ViewController
     {
+        #region Fields
+
+        private Picket _picket;
+
+        #endregion
+
         #region Constructor
 
         public CargoPicket_ListView()
@@ -37,20 +45,42 @@ namespace Solution.Module.Controllers
                 ImageName = "MenuBar_New"
             };
 
-            ////Кнопка разгрузки пикета
-            //SimpleAction OutflowCargo = new SimpleAction(this, "Outflow Cargo", PredefinedCategory.RecordEdit)
-            //{
-            //    Caption = "Разгрузить пикет",
-            //    ImageName = "MenuBar_Edit"
-            //};
+            //Кнопка разгрузки пикета
+            SimpleAction ClearPicket = new SimpleAction(this, "Clear Picket", PredefinedCategory.RecordEdit)
+            {
+                Caption = "Разгрузить пикет",
+                ImageName = "MenuBar_Edit"
+            };
 
             AddCargo.Execute += AddCargo_Execute;
-            //OutflowCargo.Execute += OutflowCargo_Execute;
+            ClearPicket.Execute += ClearPicket_Execute;
         }
 
         #endregion
 
         #region Methods
+
+        #region UpdateMasterObject
+        /// <summary>
+        /// Обновление родительского объекта
+        /// </summary>
+        /// <param name="masterObject"></param>
+        private void UpdateMasterObject(object masterObject)
+        {
+            _picket = (Picket)masterObject;
+        }
+        #endregion
+
+        #region OnMasterObjectChanged
+
+        /// <summary>
+        /// Обновление нашего объекта при изменении родительского объекта
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMasterObjectChanged(object sender, EventArgs e) => UpdateMasterObject(((PropertyCollectionSource)sender).MasterObject);
+
+        #endregion
 
         #region OnActivated
 
@@ -64,6 +94,27 @@ namespace Solution.Module.Controllers
             {
                 targetController.ProcessCurrentObjectAction.Enabled["Нельзя"] = false;
             }
+            if (((DevExpress.ExpressApp.ListView)View).CollectionSource is PropertyCollectionSource collectionSource)
+            {
+                collectionSource.MasterObjectChanged += OnMasterObjectChanged;
+                if (collectionSource.MasterObject != null)
+                {
+                    UpdateMasterObject(collectionSource.MasterObject);
+                }
+            }
+        }
+
+        #endregion
+
+        #region OnDeactivated
+
+        protected override void OnDeactivated()
+        {
+            if (((DevExpress.ExpressApp.ListView)View).CollectionSource is PropertyCollectionSource collectionSource)
+            {
+                collectionSource.MasterObjectChanged -= OnMasterObjectChanged;
+            }
+            base.OnDeactivated();
         }
 
         #endregion
@@ -89,6 +140,20 @@ namespace Solution.Module.Controllers
             addController.SaveOnAccept = true;
             addController.AcceptAction.Execute += (s, args) =>
             {
+                CargoAuditTrail newRecordAudit = new CargoAuditTrail(((XPObjectSpace)context).Session)
+                {
+                    OperationDateTime = DateTime.Now
+                };
+
+                if (newCargoPicketRecord.Status == CargoPicket.OperationType.Inflow)
+                    newRecordAudit.Weight = newCargoPicketRecord.Picket.Platform.Weight;
+                else
+                    newRecordAudit.Weight = newCargoPicketRecord.Picket.Platform.Weight * (-1);
+
+                newCargoPicketRecord.CargoAuditTrails.Add(newRecordAudit);
+
+                context.CommitChanges();
+                context.Refresh();
             };
 
             //Задаём параметры диалогового окна
@@ -101,38 +166,27 @@ namespace Solution.Module.Controllers
 
         #endregion
 
-        //#region OutflowCargo_Execute
-        ///// <summary>
-        ///// Выгрузка пикета
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void OutflowCargo_Execute(object sender, SimpleActionExecuteEventArgs e)
-        //{
-        //    //Создаём диалоговое окно
-        //    var context = Application.CreateObjectSpace(typeof(CargoPicket));
-        //    CargoPicket newCargoPicketRecord = new CargoPicket(((XPObjectSpace)context).Session);
-        //    var view = Application.CreateDetailView(context, newCargoPicketRecord);
+        private void ClearPicket_Execute(object sender, SimpleActionExecuteEventArgs e)
+        {
+            var message = XtraMessageBox.Show("Вы действительно хотите очистить пикет?", "Очищение пикета", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-        //    //Задаём поведение диалогового окна
-        //    var addController = Application.CreateController<DialogController>();
-        //    addController.AcceptAction.Caption = "Сохранить";
-        //    addController.CancelAction.Caption = "Отменить";
-        //    addController.SaveOnAccept = true;
-        //    addController.AcceptAction.Execute += (s, args) =>
-        //    {
-        //        newCargoPicketRecord.Weight *= (-1);
-        //    };
-
-        //    //Задаём параметры диалогового окна
-        //    e.ShowViewParameters.CreatedView = view;
-        //    e.ShowViewParameters.Context = TemplateContext.PopupWindow;
-        //    e.ShowViewParameters.TargetWindow = TargetWindow.NewModalWindow;
-        //    e.ShowViewParameters.Controllers.Clear();
-        //    e.ShowViewParameters.Controllers.Add(addController);
-        //}
-
-        //#endregion
+            if (message == DialogResult.Yes)
+            {
+                var thisPicket = _picket;
+                var selectedCargoPickets = ((XPObjectSpace)ObjectSpace).Session.Query<CargoPicket>().Where(c => c.Picket == thisPicket);
+                foreach (var item in selectedCargoPickets)
+                {
+                    item.IsActive = false;
+                }
+                selectedCargoPickets.First().CargoAuditTrails.Add(new CargoAuditTrail(((XPObjectSpace)ObjectSpace).Session)
+                {
+                    OperationDateTime = DateTime.Now,
+                    Weight = selectedCargoPickets.First().Picket.Platform.Weight
+                });
+                ObjectSpace.CommitChanges();
+                ObjectSpace.Refresh();
+            }
+        }
 
         #endregion
 
