@@ -157,15 +157,30 @@ namespace Solution.Module.Controllers
 
                     Row = 9;
                     Col = 1;
-
-                    foreach (var cargoAuditTrail in cargoAuditTrails)
+                    if (newReport.Storage == null)
                     {
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
-                        ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
+                        foreach (var cargoAuditTrail in cargoAuditTrails)
+                        {
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.CargoPicket.Picket.Storage.Name;
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
 
-                        Row++;
-                        Col = 1;
+                            Row++;
+                            Col = 1;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var cargoAuditTrail in cargoAuditTrails)
+                        {
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
+                            ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
+
+                            Row++;
+                            Col = 1;
+                        }
                     }
                     p.Save();
                 }
