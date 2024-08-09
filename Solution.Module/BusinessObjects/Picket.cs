@@ -47,7 +47,7 @@ namespace Solution.Module.BusinessObjects
         {
             get 
             {
-                return $"{Storage.Name}-({Number})";
+                return $"{Storage?.Name}-({Number})";
             }
         }
 

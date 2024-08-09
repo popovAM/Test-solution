@@ -61,16 +61,16 @@ namespace Solution.Module.BusinessObjects
         [Index(1)]
         public string Platform
         {
-            get { return CargoPicket.Picket.Platform.Name; }
+            get { return CargoPicket?.Picket?.Platform?.Name; }
         }
 
         /// <summary>
         /// Склад
         /// </summary>
         [Index(0)]
-        public int Storage
+        public int? Storage
         {
-            get { return CargoPicket.Picket.Storage.Name; }
+            get { return CargoPicket?.Picket?.Storage?.Name; }
         }
 
         /// <summary>
@@ -97,6 +97,7 @@ namespace Solution.Module.BusinessObjects
             get { return _cargoPicket; }
             set { SetPropertyValue(nameof(CargoPicket), ref _cargoPicket, value); }
         }
+
         #endregion
     }
 }
