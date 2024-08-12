@@ -81,12 +81,9 @@ namespace Solution.Module.DatabaseUpdate
             PermissionPolicyRole role = ObjectSpace.FindObject<PermissionPolicyRole>(new BinaryOperator("Name", _name));
 
             // Разрешение на навигацию
-            role.AddNavigationPermission(@"Application/NavigationItems/Items/Default/", SecurityPermissionState.Allow);
-            role.AddNavigationPermission(@"Application/NavigationItems/Items/Reports/", SecurityPermissionState.Allow);
-            role.AddNavigationPermission(@"Application/NavigationItems/Items/Directory/Items/Cargo_ListView", SecurityPermissionState.Allow);
-            role.AddNavigationPermission(@"Application/NavigationItems/Items/Default/Items/MyDetails", SecurityPermissionState.Deny);
-            role.AddNavigationPermission(@"Application/NavigationItems/Items/Default/Items/PermissionPolicyRole_ListView", SecurityPermissionState.Deny);
-            role.AddNavigationPermission(@"Application/NavigationItems/Items/Default/Items/PermissionPolicyUser_ListView", SecurityPermissionState.Deny);
+            role.AddNavigationPermission(@"Application/NavigationItems/Items/Objects/", SecurityPermissionState.Allow);
+            role.AddNavigationPermission(@"Application/NavigationItems/Items/AuditTrail/", SecurityPermissionState.Allow);
+            role.AddNavigationPermission(@"Application/NavigationItems/Items/User Control", SecurityPermissionState.Deny);
 
             // Разрешения на доступ к объектам и их свойствам
             role.AddTypePermissionsRecursively<PermissionPolicyUser>(SecurityOperations.FullAccess, SecurityPermissionState.Deny);
@@ -110,11 +107,11 @@ namespace Solution.Module.DatabaseUpdate
             role.AddTypePermissionsRecursively<Cargo>(SecurityOperations.Create, SecurityPermissionState.Deny);
             role.AddTypePermissionsRecursively<Cargo>(SecurityOperations.Delete, SecurityPermissionState.Deny);
 
-            //// Разрешения для объектов PlatformAuditTrail
-            //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Read, SecurityPermissionState.Allow);
-            //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Write, SecurityPermissionState.Deny);
-            //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Create, SecurityPermissionState.Deny);
-            //role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+            // Разрешения для объектов PlatformAuditTrail
+            role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Read, SecurityPermissionState.Allow);
+            role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Write, SecurityPermissionState.Deny);
+            role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Create, SecurityPermissionState.Deny);
+            role.AddTypePermissionsRecursively<PlatformAuditTrail>(SecurityOperations.Delete, SecurityPermissionState.Deny);
 
             // Разрешения для объектов CargoAuditTrail
             role.AddTypePermissionsRecursively<CargoAuditTrail>(SecurityOperations.Read, SecurityPermissionState.Allow);
