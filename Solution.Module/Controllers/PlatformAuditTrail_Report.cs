@@ -28,7 +28,7 @@ namespace Solution.Module.Controllers
         public PlatformAuditTrail_Report()
         {
             InitializeComponent();
-            SimpleAction Report = new SimpleAction(this, "Create ProReport", PredefinedCategory.ObjectsCreation)
+            SimpleAction Report = new SimpleAction(this, "Create Report", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Создать отчет"
             };
@@ -61,19 +61,6 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Add(addController);
         }
 
-        protected override void OnActivated()
-        {
-            base.OnActivated();
-        }
-        protected override void OnViewControlsCreated()
-        {
-            base.OnViewControlsCreated();
-        }
-        protected override void OnDeactivated()
-        {
-            base.OnDeactivated();
-        }
-
         private void AddReport(PlatformAudit_Report newReport, IObjectSpace context)
         {
             DateTime now = DateTime.Now;
@@ -91,12 +78,6 @@ namespace Solution.Module.Controllers
 
             var oids = platformAuditTrails.Select(s => s.Oid).ToList();
             var audits = session.Query<PlatformAuditTrail>().Where(w => oids.Contains(w.Platform.Oid)).ToList();
-
-            //var platformAuditTrailsDeleted = session.Query<PlatformAuditTrail>()
-            //    .Where(p => p.TimeOperation <= newReport.DateTime
-            //    && p.Status == PlatformAuditTrail.PlatformStatus.Deleted);
-
-            //var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted).ToList();
 
             audits = audits.Where(p => newReport.Storage == null || p.Platform.Storage.Name == newReport.Storage.Name).OrderBy(p => p.TimeOperation)
                 .ToList();
