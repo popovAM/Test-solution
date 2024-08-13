@@ -98,6 +98,7 @@ namespace Solution.Module.Controllers
         {
             DateTime now = DateTime.Now;
 
+            // Выборка записей по параметрам
             var cargoAuditTrails = ((XPObjectSpace)context).Session
                 .Query<CargoAuditTrail>()
                 .Where(p => p.OperationDateTime >= newReport.BeginDateTime
@@ -105,12 +106,14 @@ namespace Solution.Module.Controllers
                 && (newReport.Storage == null || p.CargoPicket.Picket.Storage.Name == newReport.Storage.Name)).OrderBy(p => p.OperationDateTime)
                 .ToList();
 
+            // Настройка файла
             string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
             string relativePath = Path.Combine("Reports", fileName);
             string fullPath = Path.GetFullPath(relativePath);
 
+            // Создание директории, если не создана
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-
+            
             using (var source = File.Create(fullPath))
             {
                 using (var p = new ExcelPackage(source))
@@ -119,15 +122,22 @@ namespace Solution.Module.Controllers
 
                     int Row = 1, Col = 1;
 
+                    // Стили границ ячеек в шапке
                     ws.Cells[1, 1, 6, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     ws.Cells[1, 1, 6, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     ws.Cells[1, 1, 6, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     ws.Cells[1, 1, 6, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
+                    // Стиль границ шапки
                     ws.Cells[1, 1, 6, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+
+                    // Объединение ячеек
                     ws.Cells[1, 1, 1, 2].Merge = true;
+
+                    // Текст по центру внутри ячеек
                     ws.Cells[1, 1, 100, 100].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
+                    // Ширина колонок
                     ws.Columns[1].Width = 22.44;
                     ws.Columns[2].Width = 17.9;
                     ws.Columns[3].Width = 19.5;
@@ -157,10 +167,12 @@ namespace Solution.Module.Controllers
 
                     Row = 9;
                     Col = 1;
+
                     if (newReport.Storage == null)
                     {
                         foreach (var cargoAuditTrail in cargoAuditTrails)
                         {
+                            // Заполнение Excel
                             ws.Cells[Row, Col++].Value = cargoAuditTrail.CargoPicket.Picket.Storage.Name;
                             ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
                             ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
@@ -174,6 +186,7 @@ namespace Solution.Module.Controllers
                     {
                         foreach (var cargoAuditTrail in cargoAuditTrails)
                         {
+                            // Заполнение Excel
                             ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
                             ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
                             ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
