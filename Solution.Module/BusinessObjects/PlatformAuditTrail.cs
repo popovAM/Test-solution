@@ -69,9 +69,9 @@ namespace Solution.Module.BusinessObjects
         /// Склад
         /// </summary>
         [Index(0)]
-        public int Storage
+        public int? Storage
         {
-            get { return _platform.Storage.Name; }
+            get { return _platform?.Storage?.Name; }
         }
 
         /// <summary>
