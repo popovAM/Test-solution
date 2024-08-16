@@ -21,7 +21,7 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
-    [Appearance("HideCargoPicketsWhilePlatformIsNull", TargetItems = "CargoPickets", Context = "DetailView", Visibility = ViewItemVisibility.Hide,Criteria = "[Platform] is null")]
+    [Appearance("HideCargoPicketsWhilePlatformIsNull", TargetItems = "CargoPickets", Context = "DetailView", Visibility = ViewItemVisibility.Hide, Criteria = "[Platform] is null")]
     public class Picket : Verification
     {
         #region Constructor
