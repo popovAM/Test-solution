@@ -19,7 +19,6 @@
     <CreatableItem ClassName="Solution.Module.BusinessObjects.CargoPicket" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Picket" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Platform" Removed="True" />
-    <CreatableItem ClassName="Solution.Module.BusinessObjects.PlatformAudit_Report" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.PlatformAuditTrail" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Storage" Removed="True" />
     <CreatableItem ClassName="Solution.Module.BusinessObjects.Verification" Removed="True" />
@@ -33,10 +32,9 @@
           <Item Id="CargoPicket_ListView" ImageName="BO_Product_Group" Removed="True" />
           <Item Id="Picket_ListView" Visible="False" Removed="True" />
           <Item Id="Platform_ListView" Visible="False" Removed="True" />
-          <Item Id="PlatformAudit_Report_ListView" Visible="False" />
           <Item Id="PlatformAuditTrail_ListView" ImageName="BO_Report" />
           <Item Id="Storage_ListView" ImageName="BO_Product" Removed="True" />
-          <Item Id="Verification_ListView" Visible="False" Removed="True" />
+          <Item Id="Verification_ListView" Visible="False" />
         </Items>
       </Item>
       <Item Id="Objects" Caption="Objects" IsNewNode="True">
@@ -58,7 +56,7 @@
     <SchemaModule Name="SystemModule" Version="17.2.4.0" IsNewNode="True" />
   </SchemaModules>
   <Views>
-    <DetailView Id="Cargo_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="True" />
+    <DetailView Id="Cargo_DetailView" AllowNew="False" AllowDelete="False" AllowEdit="True" Caption="Cargo" />
     <ListView Id="Cargo_ListView" AllowDelete="True" />
     <ListView Id="Cargo_LookupListView" AllowDelete="False" AllowNew="False" />
     <ListView Id="CargoAuditTrail_ListView" AllowNew="False" />
@@ -107,7 +105,5 @@
       </Columns>
     </ListView>
     <ListView Id="Storage_Platforms_ListView" AllowDelete="False" AllowNew="False" />
-    <DetailView Id="Verification_DetailView" AllowEdit="False" AllowDelete="False" AllowNew="False" />
-    <ListView Id="Verification_ListView" AllowNew="False" />
   </Views>
 </Application>

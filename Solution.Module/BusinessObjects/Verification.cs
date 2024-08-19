@@ -16,7 +16,7 @@ using System.Text;
 namespace Solution.Module.BusinessObjects
 {
     [DefaultClassOptions]
-    [ListViewFilter("Only Active", "[IsActive] = true")]
+    [ListViewFilter("Only Active", "[IsActive] = true", true)]
     public class Verification : BaseObject
     {
         #region Constructor
@@ -35,7 +35,6 @@ namespace Solution.Module.BusinessObjects
         /// Проверка на то, является ли объект активным
         /// </summary>
         [VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
-        //[VisibleInDetailView(true), VisibleInListView(true), VisibleInLookupListView(true)]
         public bool IsActive
         {
             get { return _isActive; }

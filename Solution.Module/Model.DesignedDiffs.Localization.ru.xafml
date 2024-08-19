@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <BOModel>
+    <Class Name="Solution.Module.BusinessObjects.Cargo" Caption="Груз">
+      <OwnMembers>
+        <Member Name="Name" Caption="Название" />
+        <Member Name="CargoType" Caption="Тип" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.CargoAuditTrail" Caption="Журнал изменений грузов">
+      <OwnMembers>
+        <Member Name="Storage" Caption="Склад" />
+        <Member Name="Platform" Caption="Площадка" />
+        <Member Name="OperationDateTime" Caption="Время операции" />
+        <Member Name="Weight" Caption="Вес" />
+        <Member Name="CargoPicket" Caption="Груз на пикете" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.CargoAuditTrailReport" Caption="Отчёт для груза">
+      <OwnMembers>
+        <Member Name="BeginDateTime" Caption="Дата начала отслеживания" />
+        <Member Name="EndDateTime" Caption="Дата конца отслеживания" />
+        <Member Name="Storage" Caption="Склад" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.CargoPicket" Caption="Груз на пикете">
+      <OwnMembers>
+        <Member Name="Picket" Caption="Пикет" />
+        <Member Name="Cargo" Caption="Груз" />
+        <Member Name="CargoAuditTrails" Caption="Журнал изменений для груза" />
+        <Member Name="Status" Caption="Статус" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.Picket" Caption="Пикет">
+      <OwnMembers>
+        <Member Name="Storage" Caption="Склад" />
+        <Member Name="Name" Caption="Название" />
+        <Member Name="Number" Caption="Номер" />
+        <Member Name="Platform" Caption="Площадка" />
+        <Member Name="CargoPickets" Caption="Грузы на пикете" />
+        <Member Name="NotActivePlatforms" Caption="Неактивные площадки" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.Platform" Caption="Площадка">
+      <OwnMembers>
+        <Member Name="Name" Caption="Название" />
+        <Member Name="Weight" Caption="Вес" />
+        <Member Name="Pickets" Caption="Пикеты" />
+        <Member Name="PlatformAudits" Caption="Журнал изменений для площадки" />
+        <Member Name="Storage" Caption="Склад" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.PlatformAudit_Report" Caption="Отчёт для площадки">
+      <OwnMembers>
+        <Member Name="DateTime" Caption="Дата отслеживания" />
+        <Member Name="Storage" Caption="Склад" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.PlatformAuditTrail" Caption="Журнал изменений площадки">
+      <OwnMembers>
+        <Member Name="Storage" Caption="Склад" />
+        <Member Name="Platform" Caption="Площадка" />
+        <Member Name="Status" Caption="Статус" />
+        <Member Name="TimeOperation" Caption="Дата и время операции" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.Storage" Caption="Склад">
+      <OwnMembers>
+        <Member Name="Name" Caption="Номер" />
+        <Member Name="Pickets" Caption="Пикеты" />
+        <Member Name="Platforms" Caption="Площадки" />
+      </OwnMembers>
+    </Class>
+    <Class Name="Solution.Module.BusinessObjects.Verification" Caption="Базовый класс со статусом активности">
+      <OwnMembers>
+        <Member Name="IsActive" Caption="Статус активности" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
+  <Localization>
+    <LocalizationGroup Name="Enums">
+      <LocalizationGroup Name="Solution.Module.BusinessObjects.Cargo+Type">
+        <LocalizationItem Name="Bulk" Value="Сыпучий" />
+        <LocalizationItem Name="Gaseous" Value="Газообразный" />
+        <LocalizationItem Name="Liquid" Value="Жидкий" />
+        <LocalizationItem Name="Undefined" Value="Не определено" />
+      </LocalizationGroup>
+      <LocalizationGroup Name="Solution.Module.BusinessObjects.CargoPicket+OperationType">
+        <LocalizationItem Name="Inflow" Value="Загружено" />
+        <LocalizationItem Name="Outflow" Value="Выгружено" />
+      </LocalizationGroup>
+      <LocalizationGroup Name="Solution.Module.BusinessObjects.PlatformAuditTrail+PlatformStatus">
+        <LocalizationItem Name="Created" Value="Создана" />
+        <LocalizationItem Name="Deleted" Value="Удалена" />
+      </LocalizationGroup>
+    </LocalizationGroup>
+  </Localization>
+  <NavigationItems>
+    <Items>
+      <Item Id="Default" Caption="Журналы изменений" />
+      <Item Id="Objects" Caption="Объекты" />
+    </Items>
+  </NavigationItems>
+  <Views>
+    <DetailView Id="Cargo_DetailView" Caption="Груз" />
+    <ListView Id="Cargo_ListView" Caption="Груз" />
+    <ListView Id="Cargo_LookupListView" Caption="Груз" />
+  </Views>
+</Application>
