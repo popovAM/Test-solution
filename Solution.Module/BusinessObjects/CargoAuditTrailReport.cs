@@ -1,6 +1,8 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.Base;
@@ -16,16 +18,20 @@ using System.Text;
 namespace Solution.Module.BusinessObjects
 {
     [NonPersistent]
+    [Appearance("EnabledEndDateTime", TargetItems = "EndDateTime", Context = "DetailView", Enabled = false , Criteria = "[BeginDateTime] is null")]
     public class CargoAuditTrailReport : BaseObject
     {
         #region Fields
         private DateTime _beginDateTime;
         private DateTime _endDateTime;
         private Storage _storage;
+        //private DateTime DateTimeNow = DateTime.Now;
         #endregion
 
         #region Properties
 
+        [ImmediatePostData]
+        [RuleRequiredField(DefaultContexts.Save)]
         public DateTime BeginDateTime
         {
             get
@@ -38,6 +44,7 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
+        [ImmediatePostData]
         public DateTime EndDateTime
         {
             get

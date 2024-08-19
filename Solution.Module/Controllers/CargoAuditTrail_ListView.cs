@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Actions;
+using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Layout;
@@ -33,7 +34,7 @@ namespace Solution.Module.Controllers
         {
             InitializeComponent();
             //Кнопка создания отчета по карго аудиту
-            SimpleAction Report = new SimpleAction(this, "Create Report", PredefinedCategory.ObjectsCreation)
+            SimpleAction Report = new SimpleAction(this, "Create report", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Создать отчет",
                 ImageName = "MenuBar_New"
@@ -97,96 +98,123 @@ namespace Solution.Module.Controllers
         private void AddReport(CargoAuditTrailReport newReport, IObjectSpace context)
         {
             DateTime now = DateTime.Now;
+            List<CargoAuditTrail> cargoAuditTrails;
 
-            var cargoAuditTrails = ((XPObjectSpace)context).Session
-                .Query<CargoAuditTrail>()
-                .Where(p => p.OperationDateTime >= newReport.BeginDateTime
-                && p.OperationDateTime <= newReport.EndDateTime
-                && (newReport.Storage == null || p.CargoPicket.Picket.Storage.Name == newReport.Storage.Name)).OrderBy(p => p.OperationDateTime)
-                .ToList();
-
-            string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
-            string relativePath = Path.Combine("Reports", fileName);
-            string fullPath = Path.GetFullPath(relativePath);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-
-            using (var source = File.Create(fullPath))
+            try
             {
-                using (var p = new ExcelPackage(source))
+                // Выборка записей по параметрам
+                cargoAuditTrails = ((XPObjectSpace)context).Session
+                    .Query<CargoAuditTrail>()
+                    .Where(p => p.OperationDateTime >= newReport.BeginDateTime
+                    && p.OperationDateTime <= newReport.EndDateTime
+                    && (newReport.Storage == null || p.CargoPicket.Picket.Storage.Name == newReport.Storage.Name)).OrderBy(p => p.OperationDateTime)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw new UserFriendlyException($"Произошла ошибка: {e.Message}");
+            }
+
+            if (cargoAuditTrails != null)
+            {
+                // Настройка файла
+                string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
+                string relativePath = Path.Combine("Reports", fileName);
+                string fullPath = Path.GetFullPath(relativePath);
+
+                // Создание директории, если не создана
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+
+                using (var source = File.Create(fullPath))
                 {
-                    var ws = p.Workbook.Worksheets.Add("List");
-
-                    int Row = 1, Col = 1;
-
-                    ws.Cells[1, 1, 6, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    ws.Cells[1, 1, 6, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                    ws.Cells[1, 1, 6, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                    ws.Cells[1, 1, 6, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-
-                    ws.Cells[1, 1, 6, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
-                    ws.Cells[1, 1, 1, 2].Merge = true;
-                    ws.Cells[1, 1, 100, 100].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-
-                    ws.Columns[1].Width = 22.44;
-                    ws.Columns[2].Width = 17.9;
-                    ws.Columns[3].Width = 19.5;
-
-                    ws.Cells[1, 1].Value = "Наличие груза на площадке";
-
-                    ws.Cells[2, 1].Value = "С:";
-                    ws.Cells[2, 2].Value = newReport.BeginDateTime.ToString("d");
-
-                    ws.Cells[3, 1].Value = "По:";
-                    ws.Cells[3, 2].Value = newReport.EndDateTime.ToString("d");
-
-                    ws.Cells[4, 1].Value = "Кем сформирован отчет:";
-                    ws.Cells[4, 2].Value = SecuritySystem.CurrentUserName;
-
-                    ws.Cells[5, 1].Value = "Дата и время создания:";
-                    ws.Cells[5, 2].Value = DateTime.Now.ToString("G");
-                    
-                    var storage = newReport.Storage == null ? "Все" : newReport.Storage.Name.ToString();
-
-                    ws.Cells[6, 1].Value = "Склад:";
-                    ws.Cells[6, 2].Value = storage;
-
-                    ws.Cells[8, 1].Value = "Платформа";
-                    ws.Cells[8, 2].Value = "Вес";
-                    ws.Cells[8, 3].Value = "Дата операции";
-
-                    Row = 9;
-                    Col = 1;
-                    if (newReport.Storage == null)
+                    using (var p = new ExcelPackage(source))
                     {
-                        foreach (var cargoAuditTrail in cargoAuditTrails)
-                        {
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.CargoPicket.Picket.Storage.Name;
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
+                        var ws = p.Workbook.Worksheets.Add("List");
 
-                            Row++;
-                            Col = 1;
-                        }
-                    }
-                    else
-                    {
-                        foreach (var cargoAuditTrail in cargoAuditTrails)
-                        {
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
-                            ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
+                        int Row = 1, Col = 1;
 
-                            Row++;
-                            Col = 1;
+                        // Стили границ ячеек в шапке
+                        ws.Cells[1, 1, 6, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[1, 1, 6, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[1, 1, 6, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[1, 1, 6, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                        // Стиль границ шапки
+                        ws.Cells[1, 1, 6, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+
+                        // Объединение ячеек
+                        ws.Cells[1, 1, 1, 2].Merge = true;
+
+                        // Текст по центру внутри ячеек
+                        ws.Cells[1, 1, 100, 100].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                        // Ширина колонок
+                        ws.Columns[1].Width = 22.44;
+                        ws.Columns[2].Width = 17.9;
+                        ws.Columns[3].Width = 19.5;
+
+                        ws.Cells[1, 1].Value = "Наличие груза на площадке";
+
+                        ws.Cells[2, 1].Value = "С:";
+                        ws.Cells[2, 2].Value = newReport.BeginDateTime.ToString("d");
+
+                        ws.Cells[3, 1].Value = "По:";
+                        ws.Cells[3, 2].Value = newReport.EndDateTime.ToString("d");
+
+                        ws.Cells[4, 1].Value = "Кем сформирован отчет:";
+                        ws.Cells[4, 2].Value = SecuritySystem.CurrentUserName;
+
+                        ws.Cells[5, 1].Value = "Дата и время создания:";
+                        ws.Cells[5, 2].Value = DateTime.Now.ToString("G");
+
+                        var storage = newReport.Storage == null ? "Все" : newReport.Storage.Name.ToString();
+
+                        ws.Cells[6, 1].Value = "Склад:";
+                        ws.Cells[6, 2].Value = storage;
+
+                        ws.Cells[8, 1].Value = "Платформа";
+                        ws.Cells[8, 2].Value = "Вес";
+                        ws.Cells[8, 3].Value = "Дата операции";
+
+                        Row = 9;
+                        Col = 1;
+
+                        if (newReport.Storage == null)
+                        {
+                            foreach (var cargoAuditTrail in cargoAuditTrails)
+                            {
+                                // Заполнение Excel
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.CargoPicket.Picket.Storage.Name;
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
+
+                                Row++;
+                                Col = 1;
+                            }
                         }
+                        else
+                        {
+                            foreach (var cargoAuditTrail in cargoAuditTrails)
+                            {
+                                // Заполнение Excel
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.Platform;
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.Weight;
+                                ws.Cells[Row, Col++].Value = cargoAuditTrail.OperationDateTime.ToString();
+
+                                Row++;
+                                Col = 1;
+                            }
+                        }
+                        p.Save();
                     }
-                    p.Save();
                 }
             }
+            else
+            {
+                throw new UserFriendlyException("Результат запроса пуст");
+            }
         }
-
         #endregion
 
     }

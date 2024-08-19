@@ -1,5 +1,28 @@
-﻿<Application Logo="ExpressAppLogo">
-	<Options Skin="Office 2016 Colorful" UIType="TabbedMDI" FormStyle="Ribbon">
-	  <RibbonOptions RibbonControlStyle="Office2013" />
-	</Options>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Logo="ExpressAppLogo">
+  <NavigationItems>
+    <Items>
+      <Item Id="Default">
+        <Items>
+          <Item Id="MyDetails" Removed="True" />
+          <Item Id="PermissionPolicyRole_ListView" Removed="True" />
+          <Item Id="PermissionPolicyUser_ListView" Removed="True" />
+        </Items>
+      </Item>
+      <Item Id="User control" IsNewNode="True">
+        <Items IsNewNode="True">
+          <Item Id="MyDetails" ViewId="PermissionPolicyUser_DetailView" ObjectKey="@CurrentUserID" Caption="My Details" ImageName="BO_MyDetails" IsNewNode="True" />
+          <Item Id="PermissionPolicyRole_ListView" ViewId="PermissionPolicyRole_ListView" ObjectKey="" IsNewNode="True" />
+          <Item Id="PermissionPolicyUser_ListView" ViewId="PermissionPolicyUser_ListView" ObjectKey="" IsNewNode="True" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
+  <Options Skin="Office 2016 Colorful" UIType="TabbedMDI" FormStyle="Ribbon">
+    <RibbonOptions RibbonControlStyle="Office2013" />
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="17.2.4.0" IsNewNode="True" />
+    <SchemaModule Name="SystemWindowsFormsModule" Version="17.2.4.0" IsNewNode="True" />
+  </SchemaModules>
 </Application>

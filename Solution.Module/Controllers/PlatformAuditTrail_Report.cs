@@ -23,12 +23,15 @@ using System.Text;
 
 namespace Solution.Module.Controllers
 {
-        public partial class PlatformAuditTrail_Report : ViewController
+    public partial class PlatformAuditTrail_Report : ViewController
     {
+
+        #region Constructor
         public PlatformAuditTrail_Report()
         {
             InitializeComponent();
-            SimpleAction Report = new SimpleAction(this, "Create ProReport", PredefinedCategory.ObjectsCreation)
+            //Кнопка создания отчета по платформе
+            SimpleAction Report = new SimpleAction(this, "Create Report", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Создать отчет"
             };
@@ -36,7 +39,10 @@ namespace Solution.Module.Controllers
             Report.Execute += Report_Execute;
 
         }
+        #endregion
 
+
+        #region Форма заполения параметров отчета
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
             var context = Application.CreateObjectSpace(typeof(PlatformAuditTrail_Report));
@@ -60,24 +66,15 @@ namespace Solution.Module.Controllers
             e.ShowViewParameters.Controllers.Clear();
             e.ShowViewParameters.Controllers.Add(addController);
         }
+        #endregion
 
-        protected override void OnActivated()
-        {
-            base.OnActivated();
-        }
-        protected override void OnViewControlsCreated()
-        {
-            base.OnViewControlsCreated();
-        }
-        protected override void OnDeactivated()
-        {
-            base.OnDeactivated();
-        }
 
+        #region Создание отчета
         private void AddReport(PlatformAudit_Report newReport, IObjectSpace context)
         {
             DateTime now = DateTime.Now;
             
+            // Выбор записей по параметрам
             var session = ((XPObjectSpace)context).Session;
 
             var platformAuditTrails = 
@@ -92,19 +89,15 @@ namespace Solution.Module.Controllers
             var oids = platformAuditTrails.Select(s => s.Oid).ToList();
             var audits = session.Query<PlatformAuditTrail>().Where(w => oids.Contains(w.Platform.Oid)).ToList();
 
-            //var platformAuditTrailsDeleted = session.Query<PlatformAuditTrail>()
-            //    .Where(p => p.TimeOperation <= newReport.DateTime
-            //    && p.Status == PlatformAuditTrail.PlatformStatus.Deleted);
-
-            //var platformAuditTrails = platformAuditTrailsCreated.Except(platformAuditTrailsDeleted).ToList();
-
             audits = audits.Where(p => newReport.Storage == null || p.Platform.Storage.Name == newReport.Storage.Name).OrderBy(p => p.TimeOperation)
                 .ToList();
 
+            //Настраиваем файл
             string fileName = $"Report_{now.Hour}--{now.Minute}_{now.Day}.{now.Month}.{now.Year}.xlsx";
             string relativePath = Path.Combine("Reports", fileName);
             string fullPath = Path.GetFullPath(relativePath);
 
+            //Создаем директорий
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
             using (var source = File.Create(fullPath))
@@ -114,15 +107,23 @@ namespace Solution.Module.Controllers
                     var ws = p.Workbook.Worksheets.Add("List");
 
                     int Row = 1, Col = 1;
+
+                    //Стиль границ ячеек в шапке
                     ws.Cells[2, 1, 5, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     ws.Cells[2, 1, 5, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                     ws.Cells[2, 1, 5, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                     ws.Cells[2, 1, 5, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
+                    //Стиль границ шапки
                     ws.Cells[2, 1, 5, 2].Style.Border.BorderAround(ExcelBorderStyle.Thick);
+
+                    //Объединение ячеек
                     ws.Cells[1, 1, 1, 2].Merge = true;
+
+                    //Выравнивание текста по центру внутри ячеек
                     ws.Cells[1, 1, 100, 100].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
+                    //Ширина колонок
                     ws.Columns[1].Width = 32;
                     ws.Columns[2].Width = 15;
                     ws.Columns[3].Width = 18;
@@ -145,6 +146,7 @@ namespace Solution.Module.Controllers
                     Row = 8;
                     Col = 1;
 
+                    //Заполнение файла
                     if (newReport.Storage == null)
                     {
                         ws.Cells[7, 1].Value = "Склад";
@@ -174,7 +176,7 @@ namespace Solution.Module.Controllers
                     p.Save();
                 }
             }
-
         }
+        #endregion
     }
 }
