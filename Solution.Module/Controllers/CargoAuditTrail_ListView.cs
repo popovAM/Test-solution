@@ -34,7 +34,7 @@ namespace Solution.Module.Controllers
         {
             InitializeComponent();
             //Кнопка создания отчета по карго аудиту
-            SimpleAction Report = new SimpleAction(this, "Create Report", PredefinedCategory.ObjectsCreation)
+            SimpleAction Report = new SimpleAction(this, "Create report", PredefinedCategory.ObjectsCreation)
             {
                 Caption = "Создать отчет",
                 ImageName = "MenuBar_New"
@@ -46,6 +46,7 @@ namespace Solution.Module.Controllers
         #endregion
 
         #region Форма заполения параметров отчета
+
         private void Report_Execute(object sender, SimpleActionExecuteEventArgs e)
         {
 

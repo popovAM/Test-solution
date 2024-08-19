@@ -29,8 +29,9 @@ namespace Solution.Module.BusinessObjects
         #endregion
 
         #region Properties
-        //[DataSourceCriteria("[BeginDateTime] >= [DateTimeNow]")]
+
         [ImmediatePostData]
+        [RuleRequiredField(DefaultContexts.Save)]
         public DateTime BeginDateTime
         {
             get
