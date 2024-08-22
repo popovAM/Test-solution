@@ -15,6 +15,9 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Базовый класс с проверкой активности
+    /// </summary>
     [DefaultClassOptions]
     [ListViewFilter("Only Active", "[IsActive] = true", true)]
     public class Verification : BaseObject

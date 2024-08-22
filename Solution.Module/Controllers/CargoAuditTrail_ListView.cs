@@ -24,7 +24,6 @@ using System.Text;
 
 namespace Solution.Module.Controllers
 {
-    // For more typical usage scenarios, be sure to check out https://documentation.devexpress.com/eXpressAppFramework/clsDevExpressExpressAppViewControllertopic.aspx.
     public partial class CargoAuditTrail_ListView : ViewController
     {
 

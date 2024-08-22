@@ -17,6 +17,9 @@ using static Solution.Module.BusinessObjects.CargoPicket;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Журнал изменений грузов
+    /// </summary>
     [DefaultClassOptions]
     [Appearance("ShowCreateDateTime", TargetItems = "CreateDateTime", Context = "ListView", Visibility = ViewItemVisibility.Show)]
     public class CargoAuditTrail : BaseObject

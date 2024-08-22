@@ -39,7 +39,7 @@ namespace Solution.Module.BusinessObjects
 
         #region Properties
         /// <summary>
-        /// Номер пикета, для формирования площадки
+        /// Название пикета
         /// </summary>
         [Index(1)]
         [VisibleInLookupListView(false)]
@@ -51,6 +51,9 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
+        /// <summary>
+        /// Номер пикета
+        /// </summary>
         [Index(2)]
         [ModelDefault("AllowEdit", "false")]
         [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(true)]
