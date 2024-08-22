@@ -14,6 +14,9 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Журнал изменений площадок
+    /// </summary>
     [DefaultClassOptions]
     public class PlatformAuditTrail : BaseObject
     {
@@ -24,15 +27,6 @@ namespace Solution.Module.BusinessObjects
         }
         #endregion
 
-        #region AfterConstruction
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();
-        }
-
-
-        #endregion
-
         #region Fields
         private DateTime _timeOperation;
         private PlatformStatus _status;
@@ -41,7 +35,7 @@ namespace Solution.Module.BusinessObjects
 
         #region Properties
         /// <summary>
-        /// Платформа (головной объект)
+        /// Площадка (головной объект)
         /// </summary>
         [Index(1)]
         [Association("Platform-Audits")]
@@ -75,7 +69,7 @@ namespace Solution.Module.BusinessObjects
         }
 
         /// <summary>
-        /// Статус платформы
+        /// Статус площадки
         /// </summary>
         [Index(2)]
         public PlatformStatus Status

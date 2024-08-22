@@ -17,6 +17,9 @@ using System.Text;
 
 namespace Solution.Module.BusinessObjects
 {
+    /// <summary>
+    /// Отчёт по грузам
+    /// </summary>
     [NonPersistent]
     [Appearance("EnabledEndDateTime", TargetItems = "EndDateTime", Context = "DetailView", Enabled = false , Criteria = "[BeginDateTime] is null")]
     public class CargoAuditTrailReport : BaseObject
@@ -29,7 +32,9 @@ namespace Solution.Module.BusinessObjects
         #endregion
 
         #region Properties
-
+        /// <summary>
+        /// Дата начала выборки
+        /// </summary>
         [ImmediatePostData]
         [RuleRequiredField(DefaultContexts.Save)]
         public DateTime BeginDateTime
@@ -44,6 +49,9 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
+        /// <summary>
+        /// Дата окончания выборки
+        /// </summary>
         [ImmediatePostData]
         public DateTime EndDateTime
         {
@@ -57,6 +65,9 @@ namespace Solution.Module.BusinessObjects
             }
         }
 
+        /// <summary>
+        /// Склад, по которому происходит выборка
+        /// </summary>
         public Storage Storage
         {
             get 

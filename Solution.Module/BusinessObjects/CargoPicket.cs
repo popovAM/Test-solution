@@ -82,6 +82,9 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(Status), ref _status, value); }
         }
 
+        /// <summary>
+        /// Журнал изменений груза
+        /// </summary>
         [Association("CargoPicket - CargoPicketAudits")]
         [VisibleInListView(false), VisibleInDetailView(false), VisibleInLookupListView(false)]
         public XPCollection<CargoAuditTrail> CargoAuditTrails
@@ -91,6 +94,9 @@ namespace Solution.Module.BusinessObjects
         #endregion
 
         #region Enums
+        /// <summary>
+        /// Статус операций
+        /// </summary>
         public enum OperationType
         {
             Inflow,

@@ -45,6 +45,9 @@ namespace Solution.Module.BusinessObjects
             set { SetPropertyValue(nameof(Name), ref _name, value); }
         }
 
+        /// <summary>
+        /// Записи изменений в журнале, связанные с этой площадкой
+        /// </summary>
         [Association("Platform-Audits")]
         public XPCollection<PlatformAuditTrail> PlatformAudits
         {
