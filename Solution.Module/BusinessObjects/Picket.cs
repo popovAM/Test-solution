@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Solution.Module.Interfaces;
+using DevExpress.ExpressApp.SystemModule;
 
 namespace Solution.Module.BusinessObjects
 {
@@ -21,8 +23,9 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
+    [ListViewFilter("Only Active", "[IsActive] = true", true)]
     [Appearance("HideCargoPicketsWhilePlatformIsNull", TargetItems = "CargoPickets", Context = "DetailView", Visibility = ViewItemVisibility.Hide, Criteria = "[Platform] is null")]
-    public class Picket : Verification
+    public class Picket : BaseObject, IActive
     {
         #region Constructor
         public Picket(Session session)
@@ -35,6 +38,7 @@ namespace Solution.Module.BusinessObjects
         private Storage _storage;
         private Platform _platform;
         private int _number;
+        private bool _isActive = true;
         #endregion
 
         #region Properties
@@ -109,6 +113,13 @@ namespace Solution.Module.BusinessObjects
         public XPCollection<CargoPicket> CargoPickets
         {
             get { return GetCollection<CargoPicket>(nameof(CargoPickets)); }
+        }
+
+        [VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetPropertyValue(nameof(IsActive), ref _isActive, value); }
         }
         #endregion
     }

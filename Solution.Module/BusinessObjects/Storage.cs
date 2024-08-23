@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Solution.Module.Interfaces;
+using DevExpress.ExpressApp.SystemModule;
 
 namespace Solution.Module.BusinessObjects
 {
@@ -19,7 +21,8 @@ namespace Solution.Module.BusinessObjects
     /// </summary>
     [DefaultClassOptions]
     [DefaultProperty(nameof(Name))]
-    public class Storage : Verification
+    [ListViewFilter("Only Active", "[IsActive] = true", true)]
+    public class Storage : BaseObject, IActive
     {
         #region Constructor
         public Storage(Session session)
@@ -30,6 +33,7 @@ namespace Solution.Module.BusinessObjects
 
         #region Fields
         private int _name;
+        private bool _isActive = true;
         #endregion
 
         #region Properties
@@ -59,6 +63,13 @@ namespace Solution.Module.BusinessObjects
         public XPCollection<Platform> Platforms
         {
             get { return GetCollection<Platform>(nameof(Platforms)); }
+        }
+
+        [VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetPropertyValue(nameof(IsActive), ref _isActive, value); }
         }
         #endregion
     }

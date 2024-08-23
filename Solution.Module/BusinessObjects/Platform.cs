@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.Editors;
+using Solution.Module.Interfaces;
+using DevExpress.ExpressApp.SystemModule;
 
 namespace Solution.Module.BusinessObjects
 {
@@ -20,7 +22,8 @@ namespace Solution.Module.BusinessObjects
     /// Площадка
     /// </summary>
     [DefaultClassOptions]
-    public class Platform : Verification
+    [ListViewFilter("Only Active", "[IsActive] = true", true)]
+    public class Platform : BaseObject, IActive
     {
         #region Constructor
         public Platform(Session session)
@@ -32,6 +35,7 @@ namespace Solution.Module.BusinessObjects
         #region Fields
         private string _name;
         private Storage _storage;
+        private bool _isActive = true;
         #endregion
 
         #region Properties
@@ -91,6 +95,13 @@ namespace Solution.Module.BusinessObjects
             {
                 return Pickets.Sum(p => p.CargoPickets.Where(c => c.IsActive == true).Sum(c => c.Weight));
             }
+        }
+
+        [VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetPropertyValue(nameof(IsActive), ref _isActive, value); }
         }
         #endregion
     }

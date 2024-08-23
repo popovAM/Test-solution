@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Solution.Module.Interfaces;
+using DevExpress.ExpressApp.SystemModule;
 
 namespace Solution.Module.BusinessObjects
 {
@@ -18,8 +20,8 @@ namespace Solution.Module.BusinessObjects
     /// Документ связей грузов и пикетов
     /// </summary>
     [DefaultClassOptions]
-
-    public class CargoPicket : Verification
+    [ListViewFilter("Only Active", "[IsActive] = true", true)]
+    public class CargoPicket : BaseObject, IActive
     {
         #region Constructor
         public CargoPicket(Session session)
@@ -33,6 +35,7 @@ namespace Solution.Module.BusinessObjects
         private decimal _weight;
         private Picket _picket;
         private OperationType _status;
+        private bool _isActive = true;
         #endregion
 
         #region Properties
@@ -102,6 +105,14 @@ namespace Solution.Module.BusinessObjects
             Inflow,
             Outflow
         }
+
+        [VisibleInDetailView(false), VisibleInListView(false), VisibleInLookupListView(false)]
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { SetPropertyValue(nameof(IsActive), ref _isActive, value); }
+        }
+
         #endregion
     }
 }
