@@ -141,7 +141,6 @@
     <Compile Include="BusinessObjects\CargoAuditTrailReport.cs" />
     <Compile Include="BusinessObjects\Storage.cs" />
     <Compile Include="BusinessObjects\Cargo.cs" />
-    <Compile Include="BusinessObjects\Verification.cs" />
     <Compile Include="Controllers\CargoAuditTrail_ListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -179,6 +178,7 @@
       <DependentUpon>Storage_ListView.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseUpdate\Updater.cs" />
+    <Compile Include="Interfaces\IActive.cs" />
     <Compile Include="Module.cs">
       <SubType>Component</SubType>
     </Compile>

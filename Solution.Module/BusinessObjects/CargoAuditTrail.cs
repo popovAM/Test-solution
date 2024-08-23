@@ -52,6 +52,7 @@ namespace Solution.Module.BusinessObjects
         [Index(3)]
         [ModelDefault("EditMask", "#,###,###,###,###.###")]
         [ModelDefault("DisplayFormat", "{0:#,###,###,###,###.###}")]
+        [ModelDefault("AllowEdit", "false")]
         public decimal Weight
         {
             get { return _weight; }
